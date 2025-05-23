@@ -21,6 +21,11 @@ public class Usuario {
         this.email = nome;
     }
 
+    public Usuario(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
 
     public Usuario(String email, String username, String password, String name, String genero, String cpf, String telefone, String dataNascimento) {
         this.email = email;

@@ -7,6 +7,6 @@ public interface UsuarioDAO {
 
     Usuario cadastrar(Usuario usuario) throws DBException;
     void atualizar(Usuario usuario) throws DBException;
-    Usuario login(Usuario usuario) throws DBException;
+    boolean validarUsuario(Usuario usuario) throws DBException;
 
 }

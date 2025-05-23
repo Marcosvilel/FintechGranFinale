@@ -38,8 +38,8 @@ public class OracleUsuarioDAO implements UsuarioDAO {
 
             ps.executeUpdate();
 
-            try(ResultSet generatedKeys = ps.getGeneratedKeys()){
-                if(generatedKeys.next()){
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
                     int userId = generatedKeys.getInt(1);
                     usuario.setId(userId);
                 } else {
@@ -90,7 +90,7 @@ public class OracleUsuarioDAO implements UsuarioDAO {
 
 
     @Override
-    public Usuario login(Usuario usuario) throws DBException {
+    public boolean validarUsuario(Usuario usuario) throws DBException {
         PreparedStatement ps = null;
         ResultSet rs = null;
 
@@ -99,9 +99,7 @@ public class OracleUsuarioDAO implements UsuarioDAO {
 
             String sql = "SELECT * FROM t_usuario WHERE USER_NAME = ? AND SENHA = ?";
 
-
             ps = conexao.prepareStatement(sql, new String[]{"ID_USUARIO"});
-
             ps = conexao.prepareStatement(sql);
 
             ps.setString(1, usuario.getUsername());
@@ -110,8 +108,8 @@ public class OracleUsuarioDAO implements UsuarioDAO {
 
             rs = ps.executeQuery();
 
-            try(ResultSet generatedKeys = ps.getGeneratedKeys()){
-                if(generatedKeys.next()){
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
                     int userId = generatedKeys.getInt(1);
                     usuario.setId(userId);
                 } else {
@@ -119,20 +117,20 @@ public class OracleUsuarioDAO implements UsuarioDAO {
                 }
             }
 
-            if (rs != null){
-
+            if (rs != null) {
+                return true;
             }
-
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         } finally {
             try {
                 ps.close();
                 conexao.close();
+                rs.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        return usuario;
+        return false;
     }
 }
