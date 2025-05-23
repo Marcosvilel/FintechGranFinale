@@ -1,9 +1,7 @@
 package br.com.fiap.fintech.dao.impl;
 
-import br.com.fiap.fintech.dao.LoginDAO;
 import br.com.fiap.fintech.exception.DBException;
 import br.com.fiap.fintech.factory.OracleConnectionManager;
-import br.com.fiap.fintech.model.Login;
 import br.com.fiap.fintech.model.Usuario;
 
 import java.sql.Connection;
@@ -21,12 +19,11 @@ public class OracleLoginDAO implements LoginDAO {
     public Login cadastrar(Usuario usuario) throws DBException {
         PreparedStatement ps = null;
 
-        try {
-
             conexao = OracleConnectionManager.getInstance().getConnection();
 
             String sql = "INSERT INTO t_usuario (e_mail, user_name, senha) VALUES (?, ?, ?)";
 
+        try {
             ps = conexao.prepareStatement(sql, new String[]{"ID_USUARIO"});
 
             ps.setString(1, usuario.getEmail());

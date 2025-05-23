@@ -1,33 +1,40 @@
 package br.com.fiap.fintech.model;
 
-public class Usuario extends br.com.fiap.fintech.model.Login {
+public class Usuario {
     private br.com.fiap.fintech.model.Conta conta;
-    private br.com.fiap.fintech.model.DadosPessoais dadosPessoais;
     private br.com.fiap.fintech.model.MetaFinanceira metaFinanceira;
 
+    private int id;
+    private String email;
+    private String username;
+    private String password;
+    private String name;
+    private String cpf;
+    private String dataNascimento;
+    private Endereco endereco;
+
     //Constructors
-    public Usuario() {}
-    public Usuario(String email, String username, String password) {
-        super(email, username, password);
+    public Usuario() {
     }
-    public Usuario(int id, String username) {
-        super(id, username);
-    }
-    public Usuario(int id, String email, String username) { super(id, email, username); }
-    public Usuario(int id, String email, String username, String password) { super(id, email, username, password); }
-    public Usuario(String email, String username, String password, br.com.fiap.fintech.model.Conta conta, br.com.fiap.fintech.model.DadosPessoais dadosPessoais, br.com.fiap.fintech.model.MetaFinanceira metaFinanceira) {
-        super(email, username, password);
+
+    public Usuario(Conta conta, MetaFinanceira metaFinanceira, int id, String email, String username, String password, String name, String cpf, String dataNascimento, Endereco endereco) {
         this.conta = conta;
-        this.dadosPessoais = dadosPessoais;
+        this.metaFinanceira = metaFinanceira;
+        this.id = id;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+        this.endereco = endereco;
+    }
+
+    public Usuario(String email, String username, String password, br.com.fiap.fintech.model.Conta conta, br.com.fiap.fintech.model.MetaFinanceira metaFinanceira) {
+        super();
+        this.conta = conta;
         this.metaFinanceira = metaFinanceira;
     }
-    public Usuario(String email, String username, String password, br.com.fiap.fintech.model.DadosPessoais dadosPessoais) {
-        super(email, username, password);
-        this.dadosPessoais = dadosPessoais;
-    }
-
-
-
 
     //Getters and Setters
     public br.com.fiap.fintech.model.Conta getConta() {
@@ -38,14 +45,6 @@ public class Usuario extends br.com.fiap.fintech.model.Login {
         this.conta = conta;
     }
 
-    public br.com.fiap.fintech.model.DadosPessoais getDadosPessoais() {
-        return dadosPessoais;
-    }
-
-    public void setDadosPessoais(br.com.fiap.fintech.model.DadosPessoais dadosPessoais) {
-        this.dadosPessoais = dadosPessoais;
-    }
-
     public br.com.fiap.fintech.model.MetaFinanceira getMetaFinanceira() {
         return metaFinanceira;
     }
@@ -54,7 +53,67 @@ public class Usuario extends br.com.fiap.fintech.model.Login {
         this.metaFinanceira = metaFinanceira;
     }
 
-    public br.com.fiap.fintech.model.Login getLogin(br.com.fiap.fintech.model.Login login) {return login;}
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(String dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
 }

@@ -23,7 +23,7 @@
         </div>
         <% } %>
 
-        <form id="formCadastro" action="${pageContext.request.contextPath}/processaCadastro" method="post">
+        <form id="formCadastro" action="${pageContext.request.contextPath}/cadastro" method="post">
             <!-- Dados Pessoais -->
             <div class="form-section">
                 <h3><i class="fas fa-id-card"></i> Dados Pessoais</h3>

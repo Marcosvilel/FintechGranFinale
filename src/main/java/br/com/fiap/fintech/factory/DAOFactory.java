@@ -1,13 +1,16 @@
 package br.com.fiap.fintech.factory;
 
+import br.com.fiap.fintech.dao.UsuarioDAO;
+import br.com.fiap.fintech.dao.impl.OracleUsuarioDAO;
+
 public class DAOFactory {
 
     public static br.com.fiap.fintech.dao.ContaDAO getContaDAO() {
         return new br.com.fiap.fintech.dao.impl.OracleContaDAO();
     }
 
-    public static br.com.fiap.fintech.dao.DadosPessoaisDAO getDadosPessoaisDAO() {
-        return new br.com.fiap.fintech.dao.impl.OracleDadosPessoaisDAO();
+    public static UsuarioDAO getDadosPessoaisDAO() {
+        return new OracleUsuarioDAO();
     }
 
     public static br.com.fiap.fintech.dao.EnderecoDAO getEnderecoDAO() {

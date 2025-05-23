@@ -1,9 +1,8 @@
 package br.com.fiap.fintech.dao.impl;
 
-import br.com.fiap.fintech.dao.DadosPessoaisDAO;
+import br.com.fiap.fintech.dao.UsuarioDAO;
 import br.com.fiap.fintech.exception.DBException;
 import br.com.fiap.fintech.factory.OracleConnectionManager;
-import br.com.fiap.fintech.model.DadosPessoais;
 import br.com.fiap.fintech.model.Usuario;
 
 import java.sql.Connection;
@@ -11,12 +10,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class OracleDadosPessoaisDAO implements DadosPessoaisDAO {
+public class OracleUsuarioDAO implements UsuarioDAO {
 
     private Connection conexao;
 
     @Override
-    public void cadastrar(Usuario usuario, DadosPessoais dadosPessoais) throws DBException {
+    public void cadastrar(Usuario usuario) throws DBException {
 
         PreparedStatement ps = null;
 
@@ -24,14 +23,18 @@ public class OracleDadosPessoaisDAO implements DadosPessoaisDAO {
 
             conexao = OracleConnectionManager.getInstance().getConnection();
 
-            String sql = "INSERT INTO t_dados_pessoais (ID_USUARIO, NOME, CPF, DATA_NASCIMENTO) VALUES (?, ?, ?, to_date( ? , 'dd-mm-yyyy'))";
+            String sql = "INSERT INTO t_usuario (ID_USUARIO, NOME, E_MAIL, USER_NAME, SENHA, CPF, DATA_NASCIMENTO) VALUES (?, ?, ?, ?, ?, ?, to_date( ? , 'dd-mm-yyyy'))";
 
             ps = conexao.prepareStatement(sql);
 
             ps.setInt(1, usuario.getId());
-            ps.setString(2, dadosPessoais.getName());
-            ps.setString(3, dadosPessoais.getCpf());
-            ps.setString(4, dadosPessoais.getDataNascimento());
+            ps.setString(2, usuario.getName());
+            ps.setString(3, usuario.getEmail());
+            ps.setString(4, usuario.getUsername());
+            ps.setString(5, usuario.getCpf());
+            ps.setString(6, usuario.getDataNascimento());
+            ps.setString(7, usuario.getCpf());
+            ps.setString(3, usuario.getDataNascimento());
 
             ps.executeUpdate();
 
@@ -60,10 +63,7 @@ public class OracleDadosPessoaisDAO implements DadosPessoaisDAO {
 
             ps = conexao.prepareStatement(sql);
 
-            ps.setString(1, dadosPessoais.getName());
-            ps.setString(2, dadosPessoais.getCpf());
-            ps.setString(3, dadosPessoais.getDataNascimento());
-            ps.setInt(4, usuario.getId());
+
 
             ps.executeUpdate();
 
@@ -77,6 +77,12 @@ public class OracleDadosPessoaisDAO implements DadosPessoaisDAO {
                 e.printStackTrace();
             }
         }
+
+    }
+
+
+    @Override
+    public void atualizar(Usuario usuario) throws DBException {
 
     }
 
@@ -95,14 +101,14 @@ public class OracleDadosPessoaisDAO implements DadosPessoaisDAO {
 
             ps.setInt(1, id);
 
-            rs =  ps.executeQuery();
+            rs = ps.executeQuery();
 
-            if (rs.next()){
+            if (rs.next()) {
                 String nome = rs.getString("NOME");
                 String cpf = rs.getString("CPF");
                 String dtNasc = rs.getString("DATA_NASCIMENTO");
 
-                dadosPessoais = new DadosPessoais(nome,cpf,dtNasc);
+                dadosPessoais = new DadosPessoais(nome, cpf, dtNasc);
             }
 
         } catch (SQLException e) {

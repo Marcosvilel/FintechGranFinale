@@ -21,7 +21,7 @@
         <div class="alert-error">Usuário ou senha inválidos!</div>
         <% } %>
 
-        <form action="${pageContext.request.contextPath}/autenticar" method="post"  onsubmit="window.location.href='Dashboard.jsp'; return false;">
+        <form action="${pageContext.request.contextPath}/login" method="post">
             <div class="input-group">
                 <label for="usuario">Usuário:</label>
                 <input type="text" id="usuario" name="usuario" required>

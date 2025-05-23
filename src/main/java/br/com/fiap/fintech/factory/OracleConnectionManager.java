@@ -28,7 +28,7 @@ public class OracleConnectionManager {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
 
-            connection = DriverManager.getConnection("jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl", "RM560368", "250196");
+            connection = DriverManager.getConnection("jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl", "RM560645", "220406");
 
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);

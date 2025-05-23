@@ -21,9 +21,6 @@ public class OracleContaDAO implements ContaDAO {
         PreparedStatement ps = null;
 
         try {
-
-            conexao = OracleConnectionManager.getInstance().getConnection();
-
             String sql = "INSERT INTO t_conta (ID_USUARIO, NUMERO_CONTA, AGENCIA, BANCO, TIPO_CONTA, SALDO_CONTA)  VALUES (?, ?, ?, ?, ?, ?)";
 
             ps = conexao.prepareStatement(sql);
