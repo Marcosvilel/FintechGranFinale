@@ -4,7 +4,6 @@ import br.com.fiap.fintech.dao.TransacaoDAO;
 import br.com.fiap.fintech.exception.DBException;
 import br.com.fiap.fintech.factory.OracleConnectionManager;
 import br.com.fiap.fintech.model.*;
-import br.com.fiap.fintech.model.Receita;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +18,7 @@ public class OracleTransacaoDAO implements TransacaoDAO {
 
 
     @Override
-    public void cadastrarDespesa(Usuario usuario, Despesa despesa) throws DBException {
+    public void cadastrarTransacao(Usuario usuario, Transacao transacao) throws DBException {
 
         PreparedStatement ps = null;
 
@@ -27,19 +26,21 @@ public class OracleTransacaoDAO implements TransacaoDAO {
 
             conexao = OracleConnectionManager.getInstance().getConnection();
 
-            String sql = "INSERT INTO t_despesa (ID_USUARIO, NOME_DESPESA,VALOR_DESPESA,DATA_DESPESA)  VALUES (?,?,?,?)";
+            String sql = "INSERT INTO t_transacao (ID_USUARIO,TIPO_TRANSACAO,DESCRICAO_TRANSACAO,CATEGORIA_TRANSACAO,VALOR_TRANSACAO,DATA_TRANSACAO)  VALUES (?,?,?,?,?,TO_DATE(?,'yyyy-mm-dd'))";
 
             ps = conexao.prepareStatement(sql);
 
             ps.setInt(1, usuario.getId());
-            ps.setString(2, despesa.getDescricao());
-            ps.setDouble(3, despesa.getValor());
-            ps.setString(4, despesa.getData());
+            ps.setString(2, transacao.getTipo());
+            ps.setString(3, transacao.getDescricao());
+            ps.setString(4, transacao.getCategoria());
+            ps.setDouble(5, transacao.getValor());
+            ps.setString(6, transacao.getData());
 
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DBException("Erro ao cadastrar a despesa", e);
+            throw new DBException("Erro ao cadastrar a transacao", e);
         } finally {
             try {
                 ps.close();
@@ -51,27 +52,29 @@ public class OracleTransacaoDAO implements TransacaoDAO {
     }
 
     @Override
-    public void atualizarDespesa(Usuario usuario, Despesa despesa) throws DBException {
+    public void atualizarTransacao(Usuario usuario, Transacao transacao) throws DBException {
 
         PreparedStatement ps = null;
 
         try {
             conexao = OracleConnectionManager.getInstance().getConnection();
 
-            String sql = "UPDATE t_despesa SET NOME_DESPESA = ?, VALOR_DESPESA = ?, DATA_DESPESA = ? WHERE ID_USUARIO = ? and ID_DESPESA = ?";
+            String sql = "UPDATE t_transacao SET TIPO_TRANSACAO = ?,DESCRICAO_TRANSACAO = ?,CATEGORIA_TRANSACAO = ?,VALOR_TRANSACAO = ?, DATA_TRANSACAO = TO_DATE(?,'yyyy-mm-dd') WHERE ID_USUARIO = ? and ID_TRANSACAO = ?";
 
             ps = conexao.prepareStatement(sql);
 
-            ps.setString(1, despesa.getDescricao());
-            ps.setDouble(2, despesa.getValor());
-            ps.setString(3, despesa.getData());
-            ps.setInt(4, usuario.getId());
-            ps.setInt(5, despesa.getId());
+            ps.setString(1, transacao.getTipo());
+            ps.setString(2, transacao.getDescricao());
+            ps.setString(3, transacao.getCategoria());
+            ps.setDouble(4, transacao.getValor());
+            ps.setString(5, transacao.getData());
+            ps.setInt(6, usuario.getId());
+            ps.setInt(7, transacao.getId());
 
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DBException("Erro ao atualizar de despesa", e);
+            throw new DBException("Erro ao atualizar de transacao", e);
         } finally {
             try {
                 ps.close();
@@ -83,24 +86,24 @@ public class OracleTransacaoDAO implements TransacaoDAO {
     }
 
     @Override
-    public void removerDespesa(Usuario usuario, Despesa despesa) throws DBException {
+    public void removerTransacao(Usuario usuario, Transacao transacao) throws DBException {
 
         PreparedStatement ps = null;
 
         try {
             conexao = OracleConnectionManager.getInstance().getConnection();
 
-            String sql = "DELETE FROM t_despesa WHERE ID_USUARIO = ? and ID_DESPESA = ?";
+            String sql = "DELETE FROM t_transacao WHERE ID_USUARIO = ? and ID_TRANSACAO = ?";
 
             ps = conexao.prepareStatement(sql);
 
             ps.setInt(1, usuario.getId());
-            ps.setInt(2, despesa.getId());
+            ps.setInt(2, transacao.getId());
 
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DBException("Erro ao remover despesa", e);
+            throw new DBException("Erro ao remover transacao", e);
         } finally {
             try {
                 ps.close();
@@ -112,16 +115,16 @@ public class OracleTransacaoDAO implements TransacaoDAO {
     }
 
     @Override
-    public Despesa buscarDespesa(Usuario usuario, int id) {
+    public Transacao buscarTransacao(Usuario usuario, int id) {
 
-        Despesa despesa = null;
+        Transacao transacao = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
             conexao = OracleConnectionManager.getInstance().getConnection();
 
-            String sql = "SELECT * FROM t_despesa WHERE ID_USUARIO = ? and ID_DESPESA = ?";
+            String sql = "SELECT * FROM t_transacao WHERE ID_USUARIO = ? and ID_TRANSACAO = ?";
 
             ps = conexao.prepareStatement(sql);
 
@@ -131,11 +134,13 @@ public class OracleTransacaoDAO implements TransacaoDAO {
             rs =  ps.executeQuery();
 
             if (rs.next()){
-                String nome = rs.getString("NOME_DESPESA");
-                double valor = rs.getDouble("VALOR_DESPESA");
-                String data = rs.getString("DATA_DESPESA");
+                String tipo = rs.getString("TIPO_TRANSACAO");
+                String descricao = rs.getString("DESCRICAO_TRANSACAO");
+                String categoria = rs.getString("CATEGORIA_TRANSACAO");
+                double valor = rs.getDouble("VALOR_TRANSACAO");
+                String data = rs.getString("DATA_TRANSACAO");
 
-                despesa = new Despesa(valor,data,nome);
+                transacao = new Transacao(id, tipo, descricao, categoria, valor, data);
             }
 
         } catch (SQLException e) {
@@ -148,199 +153,33 @@ public class OracleTransacaoDAO implements TransacaoDAO {
                 e.printStackTrace();
             }
         }
-        return despesa;
+        return transacao;
     }
 
     @Override
-    public List<Despesa> listarDespesas() {
+    public List<Transacao> listarTransacao(Usuario usuario) {
 
-        List<Despesa> lista = new ArrayList<>();
+        List<Transacao> lista = new ArrayList<>();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
             conexao = OracleConnectionManager.getInstance().getConnection();
 
-            String sql = "SELECT * FROM t_despesa";
+            String sql = "SELECT * FROM t_transacao WHERE ID_USUARIO = ?";
             ps = conexao.prepareStatement(sql);
+            ps.setInt(1, usuario.getId());
             rs =  ps.executeQuery();
 
             while (rs.next()){
-                String nome = rs.getString("NOME_DESPESA");
-                double valor = rs.getDouble("VALOR_DESPESA");
-                String data = rs.getString("DATA_DESPESA");
-                Despesa despesa = new Despesa(valor,data,nome);
-                lista.add(despesa);
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            try {
-                ps.close();
-                conexao.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return lista;
-    }
-
-
-
-    @Override
-    public void cadastrarReceita(Usuario usuario, Receita receita) throws DBException {
-
-        PreparedStatement ps = null;
-
-        try {
-
-            conexao = OracleConnectionManager.getInstance().getConnection();
-
-            String sql = "INSERT INTO t_receita (ID_USUARIO, NOME_RECEITA,VALOR_RECEITA,DATA_RECEITA)  VALUES (?,?,?,?)";
-            
-            ps = conexao.prepareStatement(sql);
-
-            ps.setInt(1, usuario.getId());
-            ps.setString(2, receita.getDescricao());
-            ps.setDouble(3, receita.getValor());
-            ps.setString(4, receita.getData());
-
-            ps.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new DBException("Erro ao cadastrar a receita", e);
-        } finally {
-            try {
-                ps.close();
-                conexao.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public void atualizarReceita(Usuario usuario, Receita receita) throws DBException {
-
-        PreparedStatement ps = null;
-
-        try {
-            conexao = OracleConnectionManager.getInstance().getConnection();
-
-            String sql = "UPDATE t_receita SET NOME_RECEITA = ?, VALOR_RECEITA = ?, DATA_RECEITA = ? WHERE ID_USUARIO = ? and ID_RECEITA = ?";
-
-            ps = conexao.prepareStatement(sql);
-
-            ps.setString(1, receita.getDescricao());
-            ps.setDouble(2, receita.getValor());
-            ps.setString(3, receita.getData());
-            ps.setInt(4, usuario.getId());
-            ps.setInt(5, receita.getId());
-
-            ps.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new DBException("Erro ao atualizar de receita", e);
-        } finally {
-            try {
-                ps.close();
-                conexao.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public void removerReceita(Usuario usuario, Receita receita) throws DBException {
-
-        PreparedStatement ps = null;
-
-        try {
-            conexao = OracleConnectionManager.getInstance().getConnection();
-
-            String sql = "DELETE FROM t_receita WHERE ID_USUARIO = ? and ID_RECEITA = ?";
-
-            ps = conexao.prepareStatement(sql);
-
-            ps.setInt(1, usuario.getId());
-            ps.setInt(2, receita.getId());
-
-            ps.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new DBException("Erro ao remover receita", e);
-        } finally {
-            try {
-                ps.close();
-                conexao.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public Receita buscarReceita(Usuario usuario, int id) {
-
-        Receita receita = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        try {
-            conexao = OracleConnectionManager.getInstance().getConnection();
-
-            String sql = "SELECT * FROM t_receita WHERE ID_USUARIO = ? and ID_RECEITA = ?";
-
-            ps = conexao.prepareStatement(sql);
-
-            ps.setInt(1, usuario.getId());
-            ps.setInt(1, id);
-
-            rs =  ps.executeQuery();
-
-            if (rs.next()){
-                String nome = rs.getString("NOME_RECEITA");
-                double valor = rs.getDouble("VALOR_RECEITA");
-                String data = rs.getString("DATA_RECEITA");
-
-                receita = new Receita(valor,data,nome);
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            try {
-                ps.close();
-                conexao.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return receita;
-    }
-
-    @Override
-    public List<Receita> listarReceitas() {
-
-        List<Receita> lista = new ArrayList<>();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        try {
-            conexao = OracleConnectionManager.getInstance().getConnection();
-
-            String sql = "SELECT * FROM t_receita";
-            ps = conexao.prepareStatement(sql);
-            rs =  ps.executeQuery();
-
-            while (rs.next()){
-                String nome = rs.getString("NOME_RECEITA");
-                double valor = rs.getDouble("VALOR_RECEITA");
-                String data = rs.getString("DATA_RECEITA");
-                Receita receita = new Receita(valor,data,nome);
-                lista.add(receita);
+                int id = rs.getInt("TIPO_TRANSACAO");
+                String tipo = rs.getString("TIPO_TRANSACAO");
+                String descricao = rs.getString("DESCRICAO_TRANSACAO");
+                String categoria = rs.getString("CATEGORIA_TRANSACAO");
+                double valor = rs.getDouble("VALOR_TRANSACAO");
+                String data = rs.getString("DATA_TRANSACAO");
+                Transacao transacao = new Transacao(id, tipo, descricao, categoria, valor, data);
+                lista.add(transacao);
             }
 
         } catch (SQLException e) {

@@ -1,25 +1,16 @@
 package br.com.fiap.fintech.dao;
 
 import br.com.fiap.fintech.exception.DBException;
-import br.com.fiap.fintech.model.Receita;
-import br.com.fiap.fintech.model.Despesa;
+import br.com.fiap.fintech.model.Transacao;
 import br.com.fiap.fintech.model.Usuario;
 
 import java.util.List;
 
 public interface TransacaoDAO {
 
-    void cadastrarDespesa(Usuario usuario, Despesa despesa) throws DBException;
-    void atualizarDespesa(Usuario usuario, Despesa despesa) throws DBException;
-    void removerDespesa(Usuario usuario, Despesa despesa) throws DBException;
-    Despesa buscarDespesa(Usuario usuario, int id);
-    List<Despesa> listarDespesas();
-
-
-    void cadastrarReceita(Usuario usuario, Receita receita) throws DBException;
-    void atualizarReceita(Usuario usuario, Receita receita) throws DBException;
-    void removerReceita(Usuario usuario, Receita receita) throws DBException;
-    Receita buscarReceita(Usuario usuario, int id);
-    List<Receita> listarReceitas();
-    
+    void cadastrarTransacao(Usuario usuario, Transacao transacao) throws DBException;
+    void atualizarTransacao(Usuario usuario, Transacao transacao) throws DBException;
+    void removerTransacao(Usuario usuario, Transacao transacao) throws DBException;
+    Transacao buscarTransacao(Usuario usuario, int id);
+    List<Transacao> listarTransacao(Usuario usuario);
 }
