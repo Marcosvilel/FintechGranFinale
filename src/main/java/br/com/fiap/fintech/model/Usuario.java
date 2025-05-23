@@ -34,6 +34,20 @@ public class Usuario {
 
     }
 
+    public Usuario (int id, String email, String username, String password, String name, String genero, String cpf, String telefone, String dataNascimento) {
+        this.id = id;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.genero = genero;
+        this.cpf = cpf;
+        this.telefone = telefone;
+        this.dataNascimento = dataNascimento;
+    }
+
+
+
 
     //Getters and Setters
     public String getEmail() {
@@ -105,4 +119,5 @@ public class Usuario {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
+
 }

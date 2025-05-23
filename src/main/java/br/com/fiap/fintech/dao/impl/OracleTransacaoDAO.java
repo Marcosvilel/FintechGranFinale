@@ -194,4 +194,80 @@ public class OracleTransacaoDAO implements TransacaoDAO {
         }
         return lista;
     }
+
+
+    public double totalIncome(Usuario usuario) throws DBException {
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String income = "income";
+        double valor = 0;
+
+        try {
+            conexao = OracleConnectionManager.getInstance().getConnection();
+
+            String sql = "select sum(valor_transacao) as total_income from t_transacao where id_usuario = ? and tipo_transacao = ?";
+
+            ps = conexao.prepareStatement(sql);
+
+            ps.setInt(1, usuario.getId());
+            ps.setString(2, income);
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                valor = rs.getDouble("TOTAL_INCOME");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                ps.close();
+                conexao.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return valor;
+    }
+
+
+    public double totalExpense(Usuario usuario) throws DBException {
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String income = "expense";
+        double valor = 0;
+
+        try {
+            conexao = OracleConnectionManager.getInstance().getConnection();
+
+            String sql = "select sum(valor_expense) as total_income from t_transacao where id_usuario = ? and tipo_transacao = ?";
+
+            ps = conexao.prepareStatement(sql);
+
+            ps.setInt(1, usuario.getId());
+            ps.setString(2, income);
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                valor = rs.getDouble("TOTAL_EXPENSE");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                ps.close();
+                conexao.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return valor;
+    }
+
+
 }

@@ -15,7 +15,7 @@ public class OracleUsuarioDAO implements UsuarioDAO {
     private Connection conexao;
 
     @Override
-    public void cadastrar(Usuario usuario) throws DBException {
+    public Usuario cadastrar(Usuario usuario) throws DBException {
 
         PreparedStatement ps = null;
 
@@ -25,7 +25,7 @@ public class OracleUsuarioDAO implements UsuarioDAO {
 
             String sql = "INSERT INTO t_usuario (NOME, E_MAIL, USER_NAME, SENHA, GENERO, CPF, TELEFONE, DATA_NASCIMENTO) VALUES (?, ?, ?, ?, ?, ?, ?, to_date( ? , 'YYYY-MM-DD'))";
 
-            ps = conexao.prepareStatement(sql);
+            ps = conexao.prepareStatement(sql, new String[]{"ID_USUARIO"});
 
             ps.setString(1, usuario.getName());
             ps.setString(2, usuario.getEmail());
@@ -38,6 +38,15 @@ public class OracleUsuarioDAO implements UsuarioDAO {
 
             ps.executeUpdate();
 
+            try(ResultSet generatedKeys = ps.getGeneratedKeys()){
+                if(generatedKeys.next()){
+                    int userId = generatedKeys.getInt(1);
+                    usuario.setId(userId);
+                } else {
+                    throw new DBException("Failed to retrieve userId");
+                }
+            }
+
         } catch (SQLException e) {
             throw new DBException("Erro ao cadastrar Dados Pessoais", e);
         } finally {
@@ -48,7 +57,7 @@ public class OracleUsuarioDAO implements UsuarioDAO {
                 e.printStackTrace();
             }
         }
-
+        return usuario;
     }
 
     @Override

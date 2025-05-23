@@ -5,7 +5,7 @@ import br.com.fiap.fintech.model.Usuario;
 
 public interface UsuarioDAO {
 
-    void cadastrar(Usuario usuario) throws DBException;
+    Usuario cadastrar(Usuario usuario) throws DBException;
     void atualizar(Usuario usuario) throws DBException;
     Usuario login(Usuario usuario) throws DBException;
 
