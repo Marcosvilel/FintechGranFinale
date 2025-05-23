@@ -97,7 +97,7 @@ public class OracleUsuarioDAO implements UsuarioDAO {
         try {
             conexao = OracleConnectionManager.getInstance().getConnection();
 
-            String sql = "SELECT * FROM t_usuario WHERE USER_NAME = '?' AND SENHA = '?'";
+            String sql = "SELECT * FROM t_usuario WHERE USER_NAME = ? AND SENHA = ?";
 
 
             ps = conexao.prepareStatement(sql, new String[]{"ID_USUARIO"});
@@ -109,6 +109,15 @@ public class OracleUsuarioDAO implements UsuarioDAO {
 
 
             rs = ps.executeQuery();
+
+            try(ResultSet generatedKeys = ps.getGeneratedKeys()){
+                if(generatedKeys.next()){
+                    int userId = generatedKeys.getInt(1);
+                    usuario.setId(userId);
+                } else {
+                    throw new DBException("Failed to retrieve userId");
+                }
+            }
 
             if (rs != null){
 
