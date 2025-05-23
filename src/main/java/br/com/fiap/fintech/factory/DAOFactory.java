@@ -9,16 +9,8 @@ public class DAOFactory {
         return new br.com.fiap.fintech.dao.impl.OracleContaDAO();
     }
 
-    public static UsuarioDAO getDadosPessoaisDAO() {
+    public static UsuarioDAO getUsuarioDAO() {
         return new OracleUsuarioDAO();
-    }
-
-    public static br.com.fiap.fintech.dao.EnderecoDAO getEnderecoDAO() {
-        return new br.com.fiap.fintech.dao.impl.OracleEnderecoDAO();
-    }
-
-    public static br.com.fiap.fintech.dao.LoginDAO getLoginDAO() {
-        return new br.com.fiap.fintech.dao.impl.OracleLoginDAO();
     }
 
     public static br.com.fiap.fintech.dao.MetaFinanceiraDAO getMetaFinanceiraDAO() {

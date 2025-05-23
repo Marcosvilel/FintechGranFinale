@@ -23,18 +23,18 @@ public class OracleUsuarioDAO implements UsuarioDAO {
 
             conexao = OracleConnectionManager.getInstance().getConnection();
 
-            String sql = "INSERT INTO t_usuario (ID_USUARIO, NOME, E_MAIL, USER_NAME, SENHA, CPF, DATA_NASCIMENTO) VALUES (?, ?, ?, ?, ?, ?, to_date( ? , 'dd-mm-yyyy'))";
+            String sql = "INSERT INTO t_usuario (NOME, E_MAIL, USER_NAME, SENHA, GENERO, CPF, TELEFONE, DATA_NASCIMENTO) VALUES (?, ?, ?, ?, ?, ?, ?, to_date( ? , 'YYYY-MM-DD'))";
 
             ps = conexao.prepareStatement(sql);
 
-            ps.setInt(1, usuario.getId());
-            ps.setString(2, usuario.getName());
-            ps.setString(3, usuario.getEmail());
-            ps.setString(4, usuario.getUsername());
-            ps.setString(5, usuario.getCpf());
-            ps.setString(6, usuario.getDataNascimento());
-            ps.setString(7, usuario.getCpf());
-            ps.setString(3, usuario.getDataNascimento());
+            ps.setString(1, usuario.getName());
+            ps.setString(2, usuario.getEmail());
+            ps.setString(3, usuario.getUsername());
+            ps.setString(4, usuario.getPassword());
+            ps.setString(5, usuario.getGenero());
+            ps.setString(6, usuario.getCpf());
+            ps.setString(7, usuario.getTelefone());
+            ps.setString(8, usuario.getDataNascimento());
 
             ps.executeUpdate();
 
@@ -52,17 +52,16 @@ public class OracleUsuarioDAO implements UsuarioDAO {
     }
 
     @Override
-    public void atualizar(Usuario usuario, DadosPessoais dadosPessoais) throws DBException {
+    public void atualizar(Usuario usuario) throws DBException {
 
         PreparedStatement ps = null;
 
         try {
             conexao = OracleConnectionManager.getInstance().getConnection();
 
-            String sql = "UPDATE t_dados_pessoais SET NOME = ?, CPF = ?, DATA_NASCIMENTO = ? WHERE ID_USUARIO = ?";
+            String sql = "UPDATE T_USUARIO SET NOME = ?, CPF = ?, DATA_NASCIMENTO = ? WHERE ID_USUARIO = ?";
 
             ps = conexao.prepareStatement(sql);
-
 
 
             ps.executeUpdate();
@@ -82,33 +81,28 @@ public class OracleUsuarioDAO implements UsuarioDAO {
 
 
     @Override
-    public void atualizar(Usuario usuario) throws DBException {
-
-    }
-
-    @Override
-    public DadosPessoais buscar(int id) {
-        DadosPessoais dadosPessoais = null;
+    public Usuario login(Usuario usuario) throws DBException {
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
             conexao = OracleConnectionManager.getInstance().getConnection();
 
-            String sql = "SELECT * FROM t_dados_pessoais WHERE ID_USUARIO = ?";
+            String sql = "SELECT * FROM t_usuario WHERE USER_NAME = '?' AND SENHA = '?'";
+
+
+            ps = conexao.prepareStatement(sql, new String[]{"ID_USUARIO"});
 
             ps = conexao.prepareStatement(sql);
 
-            ps.setInt(1, id);
+            ps.setString(1, usuario.getUsername());
+            ps.setString(2, usuario.getPassword());
+
 
             rs = ps.executeQuery();
 
-            if (rs.next()) {
-                String nome = rs.getString("NOME");
-                String cpf = rs.getString("CPF");
-                String dtNasc = rs.getString("DATA_NASCIMENTO");
+            if (rs != null){
 
-                dadosPessoais = new DadosPessoais(nome, cpf, dtNasc);
             }
 
         } catch (SQLException e) {
@@ -121,6 +115,6 @@ public class OracleUsuarioDAO implements UsuarioDAO {
                 e.printStackTrace();
             }
         }
-        return dadosPessoais;
+        return usuario;
     }
 }

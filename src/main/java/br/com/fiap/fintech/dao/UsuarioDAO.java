@@ -7,6 +7,6 @@ public interface UsuarioDAO {
 
     void cadastrar(Usuario usuario) throws DBException;
     void atualizar(Usuario usuario) throws DBException;
-    DadosPessoais buscar(int id);
+    Usuario login(Usuario usuario) throws DBException;
 
 }

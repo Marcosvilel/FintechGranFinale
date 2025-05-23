@@ -8,6 +8,7 @@ CREATE TABLE t_usuario (
     user_name VARCHAR2(50) NOT NULL,
     senha VARCHAR2(50) NOT NULL,
     cpf VARCHAR2(14) NOT NULL,
+    telefone VARCHAR2 (50) NOT NULL,
     data_nascimento DATE NOT NULL
 );
 
@@ -22,7 +23,6 @@ ALTER TABLE t_usuario
 ALTER TABLE t_usuario
     ADD CONSTRAINT UN_CPF
         UNIQUE (CPF);
-
 
 
 CREATE TABLE t_conta (
@@ -43,7 +43,7 @@ ALTER TABLE t_conta
         REFERENCES t_usuario (id_usuario)
         ;
         
-        
+     
 CREATE TABLE t_endereco (
     id_endereco INTEGER NOT NULL,
     id_usuario 		     INTEGER NOT NULL,

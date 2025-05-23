@@ -1,66 +1,41 @@
 package br.com.fiap.fintech.model;
 
 public class Usuario {
-    private br.com.fiap.fintech.model.Conta conta;
-    private br.com.fiap.fintech.model.MetaFinanceira metaFinanceira;
 
-    private int id
+    private int id;
     private String email;
     private String username;
     private String password;
     private String name;
+    private String genero;
     private String cpf;
+    private String telefone;
     private String dataNascimento;
-    private Endereco endereco;
+
 
     //Constructors
     public Usuario() {
     }
 
-    public Usuario(Conta conta, MetaFinanceira metaFinanceira, int id, String email, String username, String password, String name, String cpf, String dataNascimento, Endereco endereco) {
-        this.conta = conta;
-        this.metaFinanceira = metaFinanceira;
-        this.id = id;
+    public Usuario(int id, String nome) {
+        this.email = nome;
+    }
+
+
+    public Usuario(String email, String username, String password, String name, String genero, String cpf, String telefone, String dataNascimento) {
         this.email = email;
         this.username = username;
         this.password = password;
         this.name = name;
+        this.genero = genero;
         this.cpf = cpf;
+        this.telefone = telefone;
         this.dataNascimento = dataNascimento;
-        this.endereco = endereco;
+
     }
 
-    public Usuario(String email, String username, String password, br.com.fiap.fintech.model.Conta conta, br.com.fiap.fintech.model.MetaFinanceira metaFinanceira) {
-        super();
-        this.conta = conta;
-        this.metaFinanceira = metaFinanceira;
-    }
 
     //Getters and Setters
-    public br.com.fiap.fintech.model.Conta getConta() {
-        return conta;
-    }
-
-    public void setConta(br.com.fiap.fintech.model.Conta conta) {
-        this.conta = conta;
-    }
-
-    public br.com.fiap.fintech.model.MetaFinanceira getMetaFinanceira() {
-        return metaFinanceira;
-    }
-
-    public void setMetaFinanceira(br.com.fiap.fintech.model.MetaFinanceira metaFinanceira) {
-        this.metaFinanceira = metaFinanceira;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -109,11 +84,25 @@ public class Usuario {
         this.dataNascimento = dataNascimento;
     }
 
-    public Endereco getEndereco() {
-        return endereco;
+    public String getGenero() {
+        return genero;
     }
 
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public void setId(int id) {};
+
+    public int getId() {
+        return id;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 }
