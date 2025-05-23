@@ -4,7 +4,7 @@ public class Usuario {
     private br.com.fiap.fintech.model.Conta conta;
     private br.com.fiap.fintech.model.MetaFinanceira metaFinanceira;
 
-    private int id;
+    private int id
     private String email;
     private String username;
     private String password;
