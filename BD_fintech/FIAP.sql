@@ -3,13 +3,13 @@
 
 CREATE TABLE t_usuario (
     id_usuario INTEGER GENERATED ALWAYS AS IDENTITY,
-    nome VARCHAR2(50) NOT NULL,
-    e_mail VARCHAR2(50) NOT NULL,
-    user_name VARCHAR2(50) NOT NULL,
-    senha VARCHAR2(50) NOT NULL,
-    cpf VARCHAR2(14) NOT NULL,
-    telefone VARCHAR2 (50) NOT NULL,
-    data_nascimento DATE NOT NULL
+    nome VARCHAR2(50) DEFAULT NULL,
+    e_mail VARCHAR2(50) DEFAULT NULL,
+    user_name VARCHAR2(50) DEFAULT NULL,
+    senha VARCHAR2(50) DEFAULT NULL,
+    cpf VARCHAR2(14) DEFAULT NULL,
+    telefone VARCHAR2 (50) DEFAULT NULL,
+    data_nascimento DATE DEFAULT NULL
 );
 
 ALTER TABLE t_usuario
@@ -23,6 +23,10 @@ ALTER TABLE t_usuario
 ALTER TABLE t_usuario
     ADD CONSTRAINT UN_CPF
         UNIQUE (CPF);
+        
+        ALTER TABLE t_usuario
+    ADD CONSTRAINT UN_EMAIL
+        UNIQUE (e_mail);
 
 
 CREATE TABLE t_conta (
@@ -142,7 +146,8 @@ ALTER TABLE t_receita
         
         
 
-INSERT INTO t_usuario (user_name, senha) values ("admin", "admin");
+insert into t_usuario (user_name, senha) values ('admin', 'admin');
+        
         
 drop table T_CONTA CASCADE CONSTRAINTS;
 drop table t_despesa CASCADE CONSTRAINTS;
