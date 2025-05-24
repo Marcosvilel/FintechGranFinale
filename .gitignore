@@ -2,6 +2,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+src/main/java/br/com/fiap/fintech/factory/OracleConnectionManager.java
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

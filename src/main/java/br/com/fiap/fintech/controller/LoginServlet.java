@@ -37,7 +37,7 @@ public class LoginServlet extends HttpServlet {
                 System.out.println("Usuario logado com sucesso");
             } else {
                 req.setAttribute("error", "Usuario ou senha invalidos");
-                req.getRequestDispatcher("login.jsp").forward(req, resp);
+                req.getRequestDispatcher("index.jsp").forward(req, resp);
                 System.out.println("Usuario ou senha invalidos");
             }
         } catch (DBException e) {

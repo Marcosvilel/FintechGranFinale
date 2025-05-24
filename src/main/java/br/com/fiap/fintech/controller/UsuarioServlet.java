@@ -26,12 +26,12 @@ public class UsuarioServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
-        String username = req.getParameter("username");
+        String username = req.getParameter("usuario");
         String nome = req.getParameter("nomeCompleto");
         String genero = req.getParameter("genero");
         String dataNascimento = req.getParameter("dataNascimento");
         String cpf = req.getParameter("cpf");
-        String telefone = req.getParameter("telefone");
+        String telefone = req.getParameter("celular");
         String password = req.getParameter("senha");
 
         Usuario usuario = new Usuario(email, username, password, nome, genero, cpf, telefone, dataNascimento);
@@ -39,11 +39,13 @@ public class UsuarioServlet extends HttpServlet {
         try {
             dao.cadastrar(usuario);
             req.setAttribute("mensagem", "Usuario cadastrado com sucesso");
+            req.getRequestDispatcher("/dashboard.jsp").forward(req, resp);
         } catch (DBException e) {
             e.printStackTrace();
-            req.setAttribute("erro", "Erro ao cadastrar usuario");
+            req.setAttribute("error", "Erro ao cadastrar usuario");
+            req.getRequestDispatcher("/cadastro_usuario.jsp").forward(req, resp);
         }
 
-        req.getRequestDispatcher("/dashboard.jsp").forward(req, resp);
+
     }
 }

@@ -16,11 +16,9 @@ public class OracleUsuarioDAO implements UsuarioDAO {
 
     @Override
     public Usuario cadastrar(Usuario usuario) throws DBException {
-
         PreparedStatement ps = null;
 
         try {
-
             conexao = OracleConnectionManager.getInstance().getConnection();
 
             String sql = "INSERT INTO t_usuario (NOME, E_MAIL, USER_NAME, SENHA, GENERO, CPF, TELEFONE, DATA_NASCIMENTO) VALUES (?, ?, ?, ?, ?, ?, ?, to_date( ? , 'YYYY-MM-DD'))";
@@ -99,7 +97,6 @@ public class OracleUsuarioDAO implements UsuarioDAO {
 
             String sql = "SELECT * FROM t_usuario WHERE USER_NAME = ? AND SENHA = ?";
 
-            ps = conexao.prepareStatement(sql, new String[]{"ID_USUARIO"});
             ps = conexao.prepareStatement(sql);
 
             ps.setString(1, usuario.getUsername());
@@ -107,6 +104,9 @@ public class OracleUsuarioDAO implements UsuarioDAO {
 
 
             rs = ps.executeQuery();
+
+            System.out.println("rs: " + rs);
+            System.out.println("username: " + rs.getString("USER_NAME"));
 
 //            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
 //                if (generatedKeys.next()) {

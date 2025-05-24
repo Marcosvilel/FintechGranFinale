@@ -7,6 +7,7 @@ CREATE TABLE t_usuario (
     e_mail VARCHAR2(50) DEFAULT NULL,
     user_name VARCHAR2(50) DEFAULT NULL,
     senha VARCHAR2(50) DEFAULT NULL,
+    genero varchar (20) DEFAULT NULL,
     cpf VARCHAR2(14) DEFAULT NULL,
     telefone VARCHAR2 (50) DEFAULT NULL,
     data_nascimento DATE DEFAULT NULL
@@ -148,6 +149,7 @@ ALTER TABLE t_receita
 
 insert into t_usuario (user_name, senha) values ('admin', 'admin');
         
+SELECT * FROM t_usuario WHERE USER_NAME = 'admin' AND SENHA = 'admin';
         
 drop table T_CONTA CASCADE CONSTRAINTS;
 drop table t_despesa CASCADE CONSTRAINTS;
