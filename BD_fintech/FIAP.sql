@@ -1,4 +1,4 @@
---Criação tabelas
+--Criaï¿½ï¿½o tabelas
 
 
 CREATE TABLE t_usuario (
@@ -141,8 +141,8 @@ ALTER TABLE t_receita
         REFERENCES t_usuario (id_usuario);
         
         
-        
-        
+
+INSERT INTO t_usuario (user_name, senha) values ("admin", "admin");
         
 drop table T_CONTA CASCADE CONSTRAINTS;
 drop table t_despesa CASCADE CONSTRAINTS;
