@@ -95,6 +95,9 @@ public class OracleUsuarioDAO implements UsuarioDAO {
         try {
             conexao = OracleConnectionManager.getInstance().getConnection();
 
+            String username = usuario.getUsername();
+            String password = usuario.getPassword();
+
             String sql = "SELECT * FROM t_usuario WHERE USER_NAME = ? AND SENHA = ?";
 
             ps = conexao.prepareStatement(sql);
@@ -105,9 +108,6 @@ public class OracleUsuarioDAO implements UsuarioDAO {
 
             rs = ps.executeQuery();
 
-            System.out.println("rs: " + rs);
-            System.out.println("username: " + rs.getString("USER_NAME"));
-
 //            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
 //                if (generatedKeys.next()) {
 //                    int userId = generatedKeys.getInt(1);
@@ -117,21 +117,19 @@ public class OracleUsuarioDAO implements UsuarioDAO {
 //                }
 //            }
 
-            if (rs != null) {
-                if(rs.next()) {
-                    usuario.setId(rs.getInt("ID_USUARIO"));
-                    usuario.setName(rs.getString("NOME"));
-                    usuario.setEmail(rs.getString("E_MAIL"));
-                    usuario.setUsername(rs.getString("USER_NAME"));
-                    usuario.setPassword(rs.getString("SENHA"));
-                    usuario.setGenero(rs.getString("GENERO"));
-                    usuario.setCpf(rs.getString("CPF"));
-                    usuario.setTelefone(rs.getString("TELEFONE"));
-                    usuario.setDataNascimento(rs.getString("DATA_NASCIMENTO"));
-
-                }
+            if (rs.next()) {
+                usuario.setId(rs.getInt("ID_USUARIO"));
+                usuario.setName(rs.getString("NOME"));
+                usuario.setEmail(rs.getString("E_MAIL"));
+                usuario.setUsername(rs.getString("USER_NAME"));
+                usuario.setPassword(rs.getString("SENHA"));
+                usuario.setGenero(rs.getString("GENERO"));
+                usuario.setCpf(rs.getString("CPF"));
+                usuario.setTelefone(rs.getString("TELEFONE"));
+                usuario.setDataNascimento(rs.getString("DATA_NASCIMENTO"));
                 return true;
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
