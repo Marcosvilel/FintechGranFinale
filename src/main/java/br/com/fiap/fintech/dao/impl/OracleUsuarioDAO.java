@@ -108,16 +108,28 @@ public class OracleUsuarioDAO implements UsuarioDAO {
 
             rs = ps.executeQuery();
 
-            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    int userId = generatedKeys.getInt(1);
-                    usuario.setId(userId);
-                } else {
-                    throw new DBException("Failed to retrieve userId");
-                }
-            }
+//            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+//                if (generatedKeys.next()) {
+//                    int userId = generatedKeys.getInt(1);
+//                    usuario.setId(userId);
+//                } else {
+//                    throw new DBException("Failed to retrieve userId");
+//                }
+//            }
 
             if (rs != null) {
+                if(rs.next()) {
+                    usuario.setId(rs.getInt("ID_USUARIO"));
+                    usuario.setName(rs.getString("NOME"));
+                    usuario.setEmail(rs.getString("E_MAIL"));
+                    usuario.setUsername(rs.getString("USER_NAME"));
+                    usuario.setPassword(rs.getString("SENHA"));
+                    usuario.setGenero(rs.getString("GENERO"));
+                    usuario.setCpf(rs.getString("CPF"));
+                    usuario.setTelefone(rs.getString("TELEFONE"));
+                    usuario.setDataNascimento(rs.getString("DATA_NASCIMENTO"));
+
+                }
                 return true;
             }
         } catch (SQLException e) {

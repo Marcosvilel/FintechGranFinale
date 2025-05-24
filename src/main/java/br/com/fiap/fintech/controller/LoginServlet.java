@@ -18,7 +18,6 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
 
     private UsuarioDAO dao;
-
     public LoginServlet() {
         dao = DAOFactory.getUsuarioDAO();
     }
@@ -37,7 +36,7 @@ public class LoginServlet extends HttpServlet {
                 req.getRequestDispatcher("dashboard.jsp").forward(req, resp);
                 System.out.println("Usuario logado com sucesso");
             } else {
-                req.setAttribute("erro", "Usuario ou senha invalidos");
+                req.setAttribute("error", "Usuario ou senha invalidos");
                 req.getRequestDispatcher("login.jsp").forward(req, resp);
                 System.out.println("Usuario ou senha invalidos");
             }
