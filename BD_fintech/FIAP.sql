@@ -30,46 +30,6 @@ ALTER TABLE t_usuario
         UNIQUE (e_mail);
 
 
-CREATE TABLE t_conta (
-    id_conta             INTEGER GENERATED ALWAYS AS IDENTITY,
-    id_usuario 		     INTEGER NOT NULL,
-    numero_conta         INTEGER NOT NULL,
-    agencia              INTEGER NOT NULL,
-    banco                INTEGER NOT NULL,
-    tipo_conta           VARCHAR2(10) NOT NULL,
-    saldo_conta          NUMBER(15, 2) NOT NULL
-);
-ALTER TABLE t_conta
-    ADD CONSTRAINT PK_ID_CONTA
-        PRIMARY KEY (id_conta);
-ALTER TABLE t_conta
-    ADD CONSTRAINT FK_t_CONTA_USUARIO
-        FOREIGN KEY (id_usuario)
-        REFERENCES t_usuario (id_usuario)
-        ;
-        
-     
-CREATE TABLE t_endereco (
-    id_endereco INTEGER NOT NULL,
-    id_usuario 		     INTEGER NOT NULL,
-    cep                  VARCHAR2(9) NOT NULL,
-    logradouro           VARCHAR2(50) NOT NULL,
-    numero               INTEGER NOT NULL,
-    complemento          VARCHAR2(10),
-    bairro               VARCHAR2(50) NOT NULL,
-    cidade               VARCHAR2(50) NOT NULL,
-    estado               VARCHAR2(2) NOT NULL
-);
-ALTER TABLE t_endereco 
-    ADD CONSTRAINT PK_id_endereco
-        PRIMARY KEY ( id_endereco );
-ALTER TABLE t_endereco 
-    ADD CONSTRAINT FK_ID_USUARIO_ENDERECO
-        FOREIGN KEY (id_usuario)
-        REFERENCES t_usuario (id_usuario);
-
-
-
 
 CREATE TABLE t_investimento (
     id_investimento     INTEGER GENERATED ALWAYS AS IDENTITY,
@@ -109,52 +69,39 @@ ALTER TABLE t_meta_financeira
 
 
 
+
+CREATE TABLE t_transacao (
+     id_transacao INTEGER GENERATED ALWAYS AS IDENTITY,
+     id_usuario INTEGER NOT NULL,
+     tipo_transacao VARCHAR2 (50) NOT NULL,
+     descricao_transacao VARCHAR2 (50) NOT NULL,
+     categoria_transacao VARCHAR2 (50) NOT NULL,
+     valor_transacao NUMBER(15,2) NOT NULL,
+     data_transacao DATE NOT NULL
+);
+ALTER TABLE t_transacao
+    ADD CONSTRAINT PK_ID_TRANSACAO
+        PRIMARY KEY (ID_TRANSACAO);
+ALTER TABLE t_transacao
+    ADD CONSTRAINT FK_ID_USUARIO_TRANSACAO_USUARIO
+        FOREIGN KEY (id_usuario)
+            REFERENCES t_usuario (id_usuario);
+
+
+
+
+
+
 ---------------------------------------------
 
 
 
-CREATE TABLE t_despesa (
-    id_despesa INTEGER GENERATED ALWAYS AS IDENTITY,
-    id_usuario INTEGER NOT NULL,
-    nome_despesa VARCHAR2 (50) NOT NULL,
-    valor_despesa NUMBER(15,2) NOT NULL,
-    data_despesa DATE NOT NULL
-);
-ALTER TABLE t_despesa
-    ADD CONSTRAINT PK_ID_DESPESA 
-        PRIMARY KEY (ID_DESPESA);
-ALTER TABLE t_despesa
-    ADD CONSTRAINT FK_ID_USUARIO_DESPESA_USUARIO
-        FOREIGN KEY (id_usuario)
-        REFERENCES t_usuario (id_usuario);
-
-
-
-CREATE TABLE t_receita (
-    id_receita INTEGER GENERATED ALWAYS AS IDENTITY,
-    id_usuario INTEGER NOT NULL,
-    nome_receita VARCHAR2 (50) NOT NULL,
-    valor_receita NUMBER(15,2) NOT NULL,
-    data_receita DATE NOT NULL
-);
-ALTER TABLE t_receita
-    ADD CONSTRAINT PK_ID_receita 
-        PRIMARY KEY (ID_receita);
-ALTER TABLE t_receita
-    ADD CONSTRAINT FK_ID_USUARIO_receita_USUARIO
-        FOREIGN KEY (id_usuario)
-        REFERENCES t_usuario (id_usuario);
-        
-        
-
 insert into t_usuario (user_name, senha) values ('admin', 'admin');
         
 SELECT * FROM t_usuario WHERE USER_NAME = 'admin' AND SENHA = 'admin';
-        
-drop table T_CONTA CASCADE CONSTRAINTS;
-drop table t_despesa CASCADE CONSTRAINTS;
-drop table t_endereco CASCADE CONSTRAINTS;
+
+
 drop table t_investimento CASCADE CONSTRAINTS;
 drop table t_meta_financeira CASCADE CONSTRAINTS;
-drop table t_receita CASCADE CONSTRAINTS;
+drop table t_transacao CASCADE CONSTRAINTS;
 drop table t_usuario CASCADE CONSTRAINTS;

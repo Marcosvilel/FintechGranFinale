@@ -5,9 +5,6 @@ import br.com.fiap.fintech.dao.impl.OracleUsuarioDAO;
 
 public class DAOFactory {
 
-    public static br.com.fiap.fintech.dao.ContaDAO getContaDAO() {
-        return new br.com.fiap.fintech.dao.impl.OracleContaDAO();
-    }
 
     public static UsuarioDAO getUsuarioDAO() {
         return new OracleUsuarioDAO();
