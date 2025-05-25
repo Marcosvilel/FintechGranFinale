@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -72,7 +73,7 @@ public class TransacaoServlet extends HttpServlet {
             double valor = Double.parseDouble(req.getParameter("valor"));
             String descricao = req.getParameter("descricao");
             String categoria = req.getParameter("categoria");
-            String data = req.getParameter("data");
+            LocalDate data = LocalDate.parse(req.getParameter("data"));
 
 
             Transacao transacao = new Transacao(tipo, descricao, categoria, valor, data);
@@ -99,7 +100,7 @@ public class TransacaoServlet extends HttpServlet {
             double valor = Double.parseDouble(req.getParameter("valor"));
             String descricao = req.getParameter("descricao");
             String categoria = req.getParameter("categoria");
-            String data = req.getParameter("data");
+            LocalDate data = LocalDate.parse(req.getParameter("data"));
 
 
             Transacao transacao = new Transacao(id, tipo, descricao, categoria, valor, data);
@@ -124,7 +125,7 @@ public class TransacaoServlet extends HttpServlet {
             double valor = Double.parseDouble(req.getParameter("valor"));
             String descricao = req.getParameter("descricao");
             String categoria = req.getParameter("categoria");
-            String data = req.getParameter("data");
+            LocalDate data = LocalDate.parse(req.getParameter("data"));
 
 
             Transacao transacao = new Transacao(id, tipo, descricao, categoria, valor, data);

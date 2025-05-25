@@ -1,5 +1,7 @@
 package br.com.fiap.fintech.model;
 
+import java.time.LocalDate;
+
 public class Transacao {
 
     private int id;
@@ -7,13 +9,13 @@ public class Transacao {
     private String descricao;
     private String categoria;
     private double valor;
-    private String data;
+    private LocalDate data;
 
 
     public Transacao() {
     }
 
-    public Transacao(String tipo, String descricao, String categoria, double valor, String data) {
+    public Transacao(String tipo, String descricao, String categoria, double valor, LocalDate data) {
         this.tipo = tipo;
         this.descricao = descricao;
         this.categoria = categoria;
@@ -21,7 +23,7 @@ public class Transacao {
         this.data = data;
     }
 
-    public Transacao(int id, String tipo, String descricao, String categoria, double valor, String data) {
+    public Transacao(int id, String tipo, String descricao, String categoria, double valor, LocalDate data) {
         this.id = id;
         this.tipo = tipo;
         this.descricao = descricao;
@@ -70,11 +72,11 @@ public class Transacao {
         this.valor = valor;
     }
 
-    public String getData() {
+    public LocalDate getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 }

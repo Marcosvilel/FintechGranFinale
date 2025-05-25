@@ -1,4 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -81,7 +84,9 @@
               <i class="bi bi-arrow-down-circle me-2"></i>Entradas
             </div>
             <div class="card-body">
-              <h3 class="card-title text-success">R$ 5.245,00</h3>
+              <h3 class="card-title text-success">
+                R$ <fmt:formatNumber value="${income}" minFractionDigits="2" maxFractionDigits="2"/>
+              </h3>
               <p class="card-text text-muted">Total recebido este mês</p>
             </div>
           </div>
@@ -92,7 +97,9 @@
               <i class="bi bi-arrow-up-circle me-2"></i>Saídas
             </div>
             <div class="card-body">
-              <h3 class="card-title text-danger">R$ 3.780,50</h3>
+              <h3 class="card-title text-danger">
+                R$ <fmt:formatNumber value="${expense}" minFractionDigits="2" maxFractionDigits="2"/>
+              </h3>
               <p class="card-text text-muted">Total gasto este mês</p>
             </div>
           </div>
@@ -117,7 +124,53 @@
           </div>
         </div>
         <div class="card-body p-0" id="transactionList">
-          <!-- Transactions will be loaded here -->
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead>
+              <tr>
+                <th>Data</th>
+                <th>Descrição</th>
+                <th>Categoria</th>
+                <th class="text-end">Valor</th>
+                <th class="text-center">Ações</th>
+              </tr>
+              </thead>
+              <tbody>
+              <c:forEach var="transacao" items="${transacoes}">
+                <tr class="${transacao.tipo == 'income' ? 'table-success' : 'table-danger'}">
+                  <td>${transacao.data != null ? transacao.data.format(DateTimeFormatter.ofPattern('dd/MM/yyyy')) : ''}</td>
+                  <td>${transacao.descricao}</td>
+                  <td>${transacao.categoria}</td>
+                  <td class="text-end fw-bold">
+                    <c:if test="${transacao.tipo == 'income'}">+</c:if>
+                    <c:if test="${transacao.tipo == 'expense'}">-</c:if>
+                    R$ <fmt:formatNumber value="${transacao.valor}" minFractionDigits="2" maxFractionDigits="2"/>
+                  </td>
+                  <td class="text-center">
+                    <div class="btn-group btn-group-sm">
+                      <button class="btn btn-outline-primary"
+                              onclick="editarTransacao(${transacao.id})">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button class="btn btn-outline-danger"
+                              onclick="confirmarExclusao(${transacao.id})">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </c:forEach>
+
+              <c:if test="${empty transacoes}">
+                <tr>
+                  <td colspan="5" class="text-center text-muted py-4">
+                    Nenhuma transação cadastrada ainda
+                  </td>
+                </tr>
+              </c:if>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -134,6 +187,7 @@
       </div>
       <div class="modal-body">
         <form action="transacao" method="post" id="transactionForm" class="transaction-form">
+          <input type="hidden" name="acao" value="cadastrar">
           <div class="mb-3">
             <label for="transactionType" class="form-label">Tipo</label>
             <select class="form-select" id="transactionType" name="tipo" required>
