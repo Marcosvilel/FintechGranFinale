@@ -34,14 +34,13 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = req.getSession();
                 session.setAttribute("usuario", username);
                 req.getRequestDispatcher("dashboard.jsp").forward(req, resp);
-                System.out.println("Usuario logado com sucesso");
             } else {
                 req.setAttribute("error", "Usuario ou senha invalidos");
                 req.getRequestDispatcher("index.jsp").forward(req, resp);
-                System.out.println("Usuario ou senha invalidos");
             }
         } catch (DBException e) {
-            throw new RuntimeException(e);
+            req.setAttribute("error", "Erro no sistema. Tente novamente.");
+            req.getRequestDispatcher("index.jsp").forward(req, resp);
         }
     }
 }

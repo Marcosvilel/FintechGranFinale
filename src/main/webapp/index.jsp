@@ -15,9 +15,11 @@
     <div class="login-box">
         <h2>Login</h2>
 
-        <% if (request.getParameter("error") != null) { %>
-        <div class="alert-error">Usuário ou senha inválidos!</div>
-        <% } %>
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger" role="alert" style="margin: 10px 0; padding: 10px; border-left: 4px solid #dc3545; background-color: #f8d7da; color: #721c24;">
+                    ${error}
+            </div>
+        </c:if>
 
         <form id="loginForm" action="${pageContext.request.contextPath}/login" method="post">
             <div class="input-group">

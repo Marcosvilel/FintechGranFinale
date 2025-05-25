@@ -12,6 +12,6 @@ public interface MetaFinanceiraDAO {
     void atualizar(Usuario usuario, MetaFinanceira metaFinanceira) throws DBException;
     void remover(Usuario usuario, MetaFinanceira metaFinanceira) throws DBException;
     MetaFinanceira buscar(Usuario usuario, int id);
-    List<MetaFinanceira> listar();
-    
+    List<MetaFinanceira> listar(Usuario usuario) throws DBException;
+    double totalMeta(Usuario usuario) throws DBException;
 }

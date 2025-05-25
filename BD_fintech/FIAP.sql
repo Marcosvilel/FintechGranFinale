@@ -57,7 +57,9 @@ CREATE TABLE t_meta_financeira (
     id_usuario INTEGER NOT NULL,
     nome_meta VARCHAR2 (50) NOT NULL,
     valor_meta NUMBER(15,2) NOT NULL,
-    data_meta DATE NOT NULL
+    data_meta DATE NOT NULL,
+    prioridade_meta VARCHAR2 (50) NOT NULL
+
 );
 ALTER TABLE t_meta_financeira
     ADD CONSTRAINT PK_ID_META_FINANCEIRA 

@@ -1,25 +1,34 @@
 package br.com.fiap.fintech.model;
 
+import java.time.LocalDate;
+
 public class MetaFinanceira {
     private int id;
     private String nome;
     private double valor;
-    private String data;
+    private LocalDate data;
+    private String prioridade;
 
     public MetaFinanceira() {
     }
 
-    public MetaFinanceira(String nome, double valor, String data) {
+    public MetaFinanceira(int id) {
+        this.id = id;
+    }
+
+    public MetaFinanceira(String nome, double valor, LocalDate data, String prioridade) {
         this.nome = nome;
         this.valor = valor;
         this.data = data;
+        this.prioridade = prioridade;
     }
 
-    public MetaFinanceira(int id, String nome, double valor, String data) {
+    public MetaFinanceira(int id, String nome, double valor, LocalDate data, String prioridade) {
         this.id = id;
         this.nome = nome;
         this.valor = valor;
         this.data = data;
+        this.prioridade = prioridade;
     }
 
 
@@ -47,13 +56,19 @@ public class MetaFinanceira {
         this.valor = valor;
     }
 
-    public String getData() {
+    public LocalDate getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 
+    public String getPrioridade() {
+        return prioridade;
+    }
 
+    public void setPrioridade(String prioridade) {
+        this.prioridade = prioridade;
+    }
 }

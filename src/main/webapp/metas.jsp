@@ -85,15 +85,14 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="goalForm">
-                    <input type="hidden" id="goalId">
-                    <div class="mb-3"><label class="form-label">Nome</label><input type="text" id="goalName" class="form-control" required></div>
-                    <div class="mb-3"><label class="form-label">Valor Alvo</label><input type="number" id="goalTarget" class="form-control" min="0.01" step="0.01" required></div>
-                    <div class="mb-3"><label class="form-label">Valor Atual</label><input type="number" id="goalCurrent" class="form-control" min="0" step="0.01" required></div>
-                    <div class="mb-3"><label class="form-label">Data Limite</label><input type="date" id="goalDeadline" class="form-control" required></div>
+                <form action="meta-financeira" method="post" id="goalForm">
+                    <input type="hidden" id="goalId" name="acao" value="cadastrar">
+                    <div class="mb-3"><label class="form-label">Nome</label><input type="text" name="nome" id="goalName" class="form-control" required></div>
+                    <div class="mb-3"><label class="form-label">Valor Alvo</label><input type="number" name="valor" id="goalTarget" class="form-control" min="0.01" step="0.01" required></div>
+                    <div class="mb-3"><label class="form-label">Data Limite</label><input type="date" name="data" id="goalDeadline" class="form-control" required></div>
                     <div class="mb-3">
                         <label class="form-label">Prioridade</label>
-                        <select id="goalPriority" class="form-select" required>
+                        <select id="goalPriority" name="prioridade" class="form-select" required>
                             <option value="baixa">Baixa</option>
                             <option value="media" selected>Média</option>
                             <option value="alta">Alta</option>
@@ -103,7 +102,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button class="btn btn-primary" id="saveGoalBtn">Salvar</button>
+                <button type="submit" class="btn btn-primary" id="saveGoalBtn">Salvar</button>
             </div>
         </div>
     </div>

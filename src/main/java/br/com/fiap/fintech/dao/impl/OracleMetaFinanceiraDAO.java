@@ -6,10 +6,8 @@ import br.com.fiap.fintech.factory.OracleConnectionManager;
 import br.com.fiap.fintech.model.MetaFinanceira;
 import br.com.fiap.fintech.model.Usuario;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,14 +25,15 @@ public class OracleMetaFinanceiraDAO implements MetaFinanceiraDAO {
 
             conexao = OracleConnectionManager.getInstance().getConnection();
 
-            String sql = "INSERT INTO t_meta_financeira (ID_USUARIO, NOME_META, VALOR_META, DATA_META)  VALUES (?,?,?,?)";
+            String sql = "INSERT INTO t_meta_financeira (ID_USUARIO, NOME_META, VALOR_META, DATA_META, PRIORIDADE_META)  VALUES (?,?,?,TO_DATE(?, 'YYYY-MM-DD'),?)";
 
             ps = conexao.prepareStatement(sql);
 
             ps.setInt(1, usuario.getId());
             ps.setString(2, metaFinanceira.getNome());
             ps.setDouble(3, metaFinanceira.getValor());
-            ps.setString(4, metaFinanceira.getData());
+            ps.setDate(4, Date.valueOf(metaFinanceira.getData()));
+            ps.setString(4, metaFinanceira.getPrioridade());
 
             ps.executeUpdate();
 
@@ -58,13 +57,14 @@ public class OracleMetaFinanceiraDAO implements MetaFinanceiraDAO {
         try {
             conexao = OracleConnectionManager.getInstance().getConnection();
 
-            String sql = "UPDATE t_meta_financeira SET NOME_META = ?, VALOR_META = ?, DATA_META = ? WHERE ID_USUARIO = ? and ID_META_FINANCEIRA = ?";
+            String sql = "UPDATE t_meta_financeira SET NOME_META = ?, VALOR_META = ?, DATA_META = to_date(?, 'yyyy-mm-dd') WHERE ID_USUARIO = ? and ID_META_FINANCEIRA = ?";
 
             ps = conexao.prepareStatement(sql);
 
             ps.setString(1, metaFinanceira.getNome());
             ps.setDouble(2, metaFinanceira.getValor());
-            ps.setString(3, metaFinanceira.getData());
+            ps.setDate(3, Date.valueOf(metaFinanceira.getData()));
+            ps.setString(4, metaFinanceira.getPrioridade());
             ps.setInt(4, usuario.getId());
             ps.setInt(5, metaFinanceira.getId());
 
@@ -122,7 +122,7 @@ public class OracleMetaFinanceiraDAO implements MetaFinanceiraDAO {
         try {
             conexao = OracleConnectionManager.getInstance().getConnection();
 
-            String sql = "SELECT * FROM t_meta_financeira WHERE ID_USUARIO = ? and ID_META_FINANCEIRA = ?";
+            String sql = "SELECT ID_META_FINANCEIRA, ID_USUARIO, NOME_META, VALOR_META, TO_DATE(DATA_META, 'yy-MM-dd') AS DATA_META, PRIORIDADE_META FROM t_meta_financeira WHERE ID_USUARIO = ? and ID_META_FINANCEIRA = ?";
 
             ps = conexao.prepareStatement(sql);
 
@@ -132,11 +132,12 @@ public class OracleMetaFinanceiraDAO implements MetaFinanceiraDAO {
             rs =  ps.executeQuery();
 
             if (rs.next()){
+                int idMetaFinanceira = rs.getInt("ID_META_FINANCEIRA");
                 String nome = rs.getString("NOME_META");
                 double valor = rs.getDouble("VALOR_META");
-                String data = rs.getString("DATA_META");
-
-                metaFinanceira = new MetaFinanceira(nome,valor,data);
+                LocalDate data = rs.getDate("DATA_META").toLocalDate();
+                String prioridade = rs.getString("PRIORIDADE_META");
+                metaFinanceira = new MetaFinanceira(idMetaFinanceira, nome, valor, data, prioridade);
             }
 
         } catch (SQLException e) {
@@ -153,7 +154,7 @@ public class OracleMetaFinanceiraDAO implements MetaFinanceiraDAO {
     }
 
     @Override
-    public List<MetaFinanceira> listar() {
+    public List<MetaFinanceira> listar(Usuario usuario) {
 
         List<MetaFinanceira> lista = new ArrayList<>();
         PreparedStatement ps = null;
@@ -162,15 +163,18 @@ public class OracleMetaFinanceiraDAO implements MetaFinanceiraDAO {
         try {
             conexao = OracleConnectionManager.getInstance().getConnection();
 
-            String sql = "SELECT * FROM t_meta_financeira";
+            String sql = "SELECT ID_META_FINANCEIRA, ID_USUARIO, NOME_META, VALOR_META, TO_DATE(DATA_META, 'yy-MM-dd') AS DATA_META, PRIORIDADE_META FROM t_meta_financeira where  ID_USUARIO = ?";
             ps = conexao.prepareStatement(sql);
+            ps.setInt(1, usuario.getId());
             rs =  ps.executeQuery();
 
             while (rs.next()){
+                int idMetaFinanceira = rs.getInt("ID_META_FINANCEIRA");
                 String nome = rs.getString("NOME_META");
                 double valor = rs.getDouble("VALOR_META");
-                String data = rs.getString("DATA_META");
-                MetaFinanceira metaFinanceira = new MetaFinanceira(nome,valor,data);
+                LocalDate data = rs.getDate("DATA_META").toLocalDate();
+                String prioridade = rs.getString("PRIORIDADE_META");
+                MetaFinanceira metaFinanceira = new MetaFinanceira(idMetaFinanceira, nome, valor, data, prioridade);
                 lista.add(metaFinanceira);
             }
 
@@ -185,5 +189,39 @@ public class OracleMetaFinanceiraDAO implements MetaFinanceiraDAO {
             }
         }
         return lista;
+    }
+
+    public double totalMeta(Usuario usuario) throws DBException {
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        double valor = 0;
+
+        try {
+            conexao = OracleConnectionManager.getInstance().getConnection();
+
+            String sql = "select sum(VALOR_META) as total_meta from t_meta_financeira where id_usuario = ?";
+
+            ps = conexao.prepareStatement(sql);
+
+            ps.setInt(1, usuario.getId());
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                valor = rs.getDouble("total_meta");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                ps.close();
+                conexao.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return valor;
     }
 }
