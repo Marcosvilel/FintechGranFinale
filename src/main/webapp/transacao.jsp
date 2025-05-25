@@ -152,10 +152,14 @@
                               onclick="editarTransacao(${transacao.id})">
                         <i class="bi bi-pencil"></i>
                       </button>
-                      <button class="btn btn-outline-danger"
-                              onclick="confirmarExclusao(${transacao.id})">
-                        <i class="bi bi-trash"></i>
-                      </button>
+                      <form action="${pageContext.request.contextPath}/transacao" method="post" style="display: inline;">
+                        <input type="hidden" name="acao" value="excluir">
+                        <input type="hidden" name="id" value="${transacao.id}">
+                        <button type="submit" class="btn btn-outline-danger"
+                                onclick="return confirm('Tem certeza que deseja excluir esta transação?')">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </form>
                     </div>
                   </td>
                 </tr>

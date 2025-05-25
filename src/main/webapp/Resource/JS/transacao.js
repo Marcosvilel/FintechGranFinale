@@ -107,25 +107,25 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = `transacao?acao=buscar-transacao&id=${id}`;
     }
 
-    // Função para exclusão
-    window.confirmarExclusao = function(id) {
-        if (confirm('Tem certeza que deseja excluir esta transação?')) {
-            fetch(`transacao?acao=excluir&id=${id}`, {
-                method: 'POST'
-            })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
-                        alert('Erro ao excluir transação');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Erro ao excluir transação');
-                });
-        }
-    }
+    // // Função para exclusão
+    // window.confirmarExclusao = function(id) {
+    //     if (confirm('Tem certeza que deseja excluir esta transação?')) {
+    //         fetch(`transacao?acao=excluir&id=${id}`, {
+    //             method: 'POST'
+    //         })
+    //             .then(response => {
+    //                 if (response.ok) {
+    //                     window.location.reload();
+    //                 } else {
+    //                     alert('Erro ao excluir transação');
+    //                 }
+    //             })
+    //             .catch(error => {
+    //                 console.error('Error:', error);
+    //                 alert('Erro ao excluir transação');
+    //             });
+    //     }
+    // }
 
     // Initialize the application
     init();

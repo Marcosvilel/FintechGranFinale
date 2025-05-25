@@ -121,14 +121,9 @@ public class TransacaoServlet extends HttpServlet {
     private void excluir(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             int id = Integer.parseInt(req.getParameter("id"));
-            String tipo = req.getParameter("tipo");
-            double valor = Double.parseDouble(req.getParameter("valor"));
-            String descricao = req.getParameter("descricao");
-            String categoria = req.getParameter("categoria");
-            LocalDate data = LocalDate.parse(req.getParameter("data"));
 
 
-            Transacao transacao = new Transacao(id, tipo, descricao, categoria, valor, data);
+            Transacao transacao = new Transacao(id);
             dao.removerTransacao(usuario, transacao);
             req.setAttribute("mensagem", "Entrada excluida com sucesso!");
 

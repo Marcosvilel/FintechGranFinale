@@ -15,6 +15,10 @@ public class Transacao {
     public Transacao() {
     }
 
+    public Transacao(int id) {
+        this.id = id;
+    }
+
     public Transacao(String tipo, String descricao, String categoria, double valor, LocalDate data) {
         this.tipo = tipo;
         this.descricao = descricao;
