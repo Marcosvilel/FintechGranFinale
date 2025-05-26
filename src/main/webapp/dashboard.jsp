@@ -1,9 +1,9 @@
 
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="Resource/CSS/dashboard.css"> <!-- continue usando seu CSS -->
@@ -13,53 +13,7 @@
 </head>
 
 <body>
-<div class="container-fluid">
-    <div class="row">
-        <!-- Barra lateral -->
-        <div class="col-md-3 col-lg-2 sidebar p-0">
-            <div class="d-flex flex-column p-3">
-                <div class="logo-area mb-4 text-center">
-                    <div class="split-word">
-                        <i class="bi bi-coin"></i>
-                        <span class="top">FINANCE</span>
-                        <span class="bottom">EASY</span>
-                    </div>
-                </div>
-                <ul class="nav nav-pills flex-column mb-auto">
-                    <li class="nav-item">
-                        <a href="dashboard.jsp" class="nav-link active">
-                            <i class="bi bi-house-door"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="transacao.jsp" class="nav-link">
-                            <i class="bi bi-cash-stack"></i> Transações
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="investimento.jsp" class="nav-link">
-                            <i class="bi bi-graph-up"></i> Investimentos
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="metas.jsp" class="nav-link">
-                            <i class="bi bi-piggy-bank"></i> Metas
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="relatorios.jsp" class="nav-link">
-                            <i class="bi bi-file-earmark-text"></i> Relatórios
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="perfil.jsp" class="nav-link">
-                            <i class="bi bi-person-circle"></i> Perfil
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+<%@ include file="Sidebar.jsp" %>
 
         <!-- Conteúdo principal -->
         <main class="col-md-9 col-lg-10 ms-sm-auto px-md-4 py-4">
