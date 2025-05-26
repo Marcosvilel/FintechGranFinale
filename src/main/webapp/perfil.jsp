@@ -18,7 +18,11 @@
         <div class="col-md-3 col-lg-2 sidebar p-0">
             <div class="d-flex flex-column p-3">
                 <div class="logo-area mb-4 text-center">
-                    <h4><i class="bi bi-coin"></i> Fintech</h4>
+                    <div class="split-word">
+                        <i class="bi bi-coin"></i>
+                        <span class="top">FINANCE</span>
+                        <span class="bottom">EASY</span>
+                    </div>
                 </div>
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
