@@ -84,7 +84,7 @@ public class OracleMetaFinanceiraDAO implements MetaFinanceiraDAO {
     }
 
     @Override
-    public void remover(Usuario usuario, MetaFinanceira metaFinanceira) throws DBException {
+    public void remover(Usuario usuario, int id) throws DBException {
 
         PreparedStatement ps = null;
 
@@ -96,7 +96,7 @@ public class OracleMetaFinanceiraDAO implements MetaFinanceiraDAO {
             ps = conexao.prepareStatement(sql);
 
             ps.setInt(1, usuario.getId());
-            ps.setInt(2, metaFinanceira.getId());
+            ps.setInt(2, id);
 
             ps.executeUpdate();
 
@@ -128,17 +128,17 @@ public class OracleMetaFinanceiraDAO implements MetaFinanceiraDAO {
             ps = conexao.prepareStatement(sql);
 
             ps.setInt(1, usuario.getId());
-            ps.setInt(1, id);
+            ps.setInt(2, id);
 
             rs =  ps.executeQuery();
 
             if (rs.next()){
-                int idMetaFinanceira = rs.getInt("ID_META_FINANCEIRA");
+                int idMeta = rs.getInt("ID_META_FINANCEIRA");
                 String nome = rs.getString("NOME_META");
                 double valor = rs.getDouble("VALOR_META");
                 LocalDate data = rs.getDate("DATA_META").toLocalDate();
                 String prioridade = rs.getString("PRIORIDADE_META");
-                metaFinanceira = new MetaFinanceira(idMetaFinanceira, nome, valor, data, prioridade);
+                metaFinanceira = new MetaFinanceira(idMeta, nome, valor, data, prioridade);
             }
 
         } catch (SQLException e) {

@@ -5,7 +5,6 @@ import br.com.fiap.fintech.exception.DBException;
 import br.com.fiap.fintech.factory.DAOFactory;
 import br.com.fiap.fintech.model.MetaFinanceira;
 import br.com.fiap.fintech.model.Usuario;
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,163 +15,123 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-@WebServlet("/metaFinanceira")
+@WebServlet("/meta")
 public class MetaFinanceiraServlet extends HttpServlet {
-
     private MetaFinanceiraDAO dao;
     private Usuario usuario;
 
     @Override
-    public void init(ServletConfig config) throws ServletException {
-        usuario = new Usuario(1, "Admin"); // Exemplo - você deve pegar do usuário logado
+    public void init() throws ServletException {
+        super.init();
+        usuario = new Usuario(2, "JOAO_DIAS"); // Deve vir da sessão
         dao = DAOFactory.getMetaFinanceiraDAO();
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String acao = req.getParameter("acao");
 
+        switch (acao) {
+            case "listar":
+                listarMetas(req, resp);
+                break;
+            case "abrir-edicao":
+                abrirEdicao(req, resp);
+                break;
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String acao = req.getParameter("acao");
 
         switch (acao) {
             case "cadastrar":
-                try {
-                    cadastrar(req, resp);
-                    System.out.println("Cadastrado com sucesso! switch");
-                } catch (DBException e) {
-                    System.out.println("erro ao cadastrar switch" );
-                    throw new RuntimeException(e);
-                }
+                cadastrar(req, resp);
                 break;
-            case "alterar":
-                try {
-                    editar(req, resp);
-                } catch (DBException e) {
-                    throw new RuntimeException(e);
-                }
+            case "editar":
+                editar(req, resp);
                 break;
             case "excluir":
-                try {
-                    excluir(req, resp);
-                } catch (DBException e) {
-                    throw new RuntimeException(e);
-                }
-                break;
-        }
-
-
-    }
-
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        String acao = req.getParameter("acao");
-
-        switch (acao) {
-            case "pagina-meta-financeira":
-                try {
-                    paginaMeta(req, resp);
-                } catch (DBException e) {
-                    throw new RuntimeException(e);
-                }
-                break;
-            case "buscar-meta-financeira":
-                buscarMeta(req, resp);
+                excluir(req, resp);
                 break;
         }
     }
 
-
-
-
-
-
-    private void cadastrar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, DBException {
+    private void listarMetas(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<MetaFinanceira> metas = null;
         try {
-            String nome = req.getParameter("nome");
-            double valor = Double.parseDouble(req.getParameter("valor"));
-            LocalDate data = LocalDate.parse(req.getParameter("data"));
-            String prioridade = req.getParameter("prioridade");
-
-            MetaFinanceira metaFinanceira = new MetaFinanceira(nome, valor, data, prioridade);
-            dao.cadastrar(usuario, metaFinanceira);
-            req.setAttribute("mensagem", "Meta cadastrada com sucesso!");
-            System.out.println("Meta cadastrada com sucesso!");
-
-        } catch (NumberFormatException e) {
-            req.setAttribute("erro", "Valor inválido: " + e.getMessage());
-            System.out.println("erro: " + e.getMessage());
-        } catch (Exception e) {
-            req.setAttribute("erro", "Erro ao cadastrar meta: " + e.getMessage());
-            System.out.println("Erro ao cadastrar meta: " + e.getMessage());
-        }
-        paginaMeta(req, resp);
-    }
-
-
-
-    private void editar(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException, DBException {
-        try {
-            int id = Integer.parseInt(req.getParameter("id"));
-            String nome = req.getParameter("nome");
-            double valor = Double.parseDouble(req.getParameter("valor"));
-            LocalDate data = LocalDate.parse(req.getParameter("data"));
-            String prioridade = req.getParameter("prioridade");
-
-            MetaFinanceira metaFinanceira = new MetaFinanceira(id, nome, valor, data, prioridade);
-            dao.atualizar(usuario, metaFinanceira);
-            req.setAttribute("mensagem", "Meta alterada com sucesso!");
-
-        } catch (NumberFormatException e) {
-            req.setAttribute("erro", "Valor inválido: " + e.getMessage());
-        } catch (Exception e) {
-            req.setAttribute("erro", "Erro ao editar meta: " + e.getMessage());
-        }
-        paginaMeta(req, resp);
-    }
-
-
-    private void excluir(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, DBException {
-        try {
-            int id = Integer.parseInt(req.getParameter("id"));
-
-
-            MetaFinanceira metaFinanceira = new MetaFinanceira(id);
-            dao.remover(usuario, metaFinanceira);
-            req.setAttribute("mensagem", "Meta excluida com sucesso!");
-
-
-
-        } catch (NumberFormatException e) {
-            req.setAttribute("erro", "Valor inválido: " + e.getMessage());
-        } catch (DBException e) {
-            e.printStackTrace();
-            req.setAttribute("erro", "Erro ao excluir meta: " + e.getMessage());
-        }
-        paginaMeta(req, resp);
-    }
-
-
-
-    private void buscarMeta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
-        MetaFinanceira metaFinanceira = dao.buscar(usuario, id);
-        req.setAttribute("meta", metaFinanceira);
-        req.getRequestDispatcher("editar-meta.jsp").forward(req, resp);
-    }
-
-    private void paginaMeta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, DBException {
-        List<MetaFinanceira> lista = dao.listar(usuario);
-        req.setAttribute("metas", lista);
-
-        double totalMetas = 0;
-        try {
-            totalMetas = dao.totalMeta(usuario);
+            metas = dao.listar(usuario);
         } catch (DBException e) {
             throw new RuntimeException(e);
         }
-        req.setAttribute("totalMetas", totalMetas);
-
-
+        req.setAttribute("metas", metas);
         req.getRequestDispatcher("metas.jsp").forward(req, resp);
+    }
+
+    private void cadastrar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            String nome = req.getParameter("nome");
+            double valor = Double.parseDouble(req.getParameter("valor"));
+            LocalDate data = LocalDate.parse(req.getParameter("data"));
+            String prioridade = req.getParameter("prioridade");
+
+            MetaFinanceira metaFinanceira = new MetaFinanceira(nome,valor,data,prioridade);
+            dao.cadastrar(usuario, metaFinanceira);
+
+            req.setAttribute("mensagem", "Meta cadastrada com sucesso!");
+        } catch (DBException e) {
+            e.printStackTrace();
+            req.setAttribute("erro", "Erro ao cadastrar meta");
+        } catch (NumberFormatException e) {
+            req.setAttribute("erro", "Valor inválido");
+        }
+
+        listarMetas(req, resp);
+    }
+
+    private void editar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            int id = Integer.parseInt(req.getParameter("id"));
+            String nome = req.getParameter("nome");
+            double valor = Double.parseDouble(req.getParameter("valor"));
+            LocalDate data = LocalDate.parse(req.getParameter("data"));
+            String prioridade = req.getParameter("prioridade");
+
+            MetaFinanceira metaFinanceira = new MetaFinanceira(id,nome,valor,data,prioridade);
+            dao.atualizar(usuario, metaFinanceira);
+
+            req.setAttribute("mensagem", "Meta atualizada com sucesso!");
+        } catch (DBException e) {
+            e.printStackTrace();
+            req.setAttribute("erro", "Erro ao atualizar meta");
+        } catch (NumberFormatException e) {
+            req.setAttribute("erro", "Valor inválido");
+        }
+
+        listarMetas(req, resp);
+    }
+
+    private void excluir(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            int id = Integer.parseInt(req.getParameter("id"));
+            dao.remover(usuario, id);
+
+            req.setAttribute("mensagem", "Meta removida com sucesso!");
+        } catch (DBException e) {
+            e.printStackTrace();
+            req.setAttribute("erro", "Erro ao remover meta");
+        }
+
+        listarMetas(req, resp);
+    }
+
+
+
+    private void abrirEdicao(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        MetaFinanceira meta = dao.buscar(usuario, id);
+        req.setAttribute("meta", meta);
+        req.getRequestDispatcher("editar-meta.jsp").forward(req, resp);
     }
 }
