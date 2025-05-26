@@ -60,11 +60,11 @@
 
         <!-- Conteúdo Principal -->
         <div class="col-md-9 col-lg-10 ms-sm-auto main-content">
-            <div class="page-header">
-                <h1 class="page-title">
+            <div class="page-header d-flex justify-content-between align-items-center">
+                <h1 class="page-title m-0">
                     <i class="bi bi-piggy-bank me-2"></i>Metas Financeiras
                 </h1>
-                <div>
+                <div class="d-flex">
                     <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#filterModal">
                         <i class="bi bi-funnel"></i> Filtrar
                     </button>
@@ -74,37 +74,31 @@
                 </div>
             </div>
 
-            <div class="row">
+            <br>
+
+            <!-- Cards de Resumo Financeiro -->
+            <div class="row mb-4">
                 <div class="col-md-4 mb-4">
-                    <div class="card goal-card">
-                        <div class="card-header bg-primary text-white">
-                            <i class="bi bi-check-circle me-2"></i>Concluídas
-                        </div>
+                    <div class="card">
                         <div class="card-body">
-                            <h3 class="card-title">${concluidas}</h3>
-                            <p class="card-text">Metas alcançadas</p>
+                            <h5 class="card-title">Total em Metas</h5>
+                            <p class="card-text">R$ <fmt:formatNumber value="${totalMetas}" minFractionDigits="2" maxFractionDigits="2"/></p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 mb-4">
-                    <div class="card goal-card">
-                        <div class="card-header bg-warning text-dark">
-                            <i class="bi bi-clock me-2"></i>Em Andamento
-                        </div>
+                    <div class="card">
                         <div class="card-body">
-                            <h3 class="card-title">${andamento}</h3>
-                            <p class="card-text">Metas em progresso</p>
+                            <h5 class="card-title">Alcançado</h5>
+                            <p class="card-text">R$ <fmt:formatNumber value="${totalAlcancado}" minFractionDigits="2" maxFractionDigits="2"/></p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 mb-4">
-                    <div class="card goal-card">
-                        <div class="card-header bg-danger text-white">
-                            <i class="bi bi-exclamation-circle me-2"></i>Vencidas
-                        </div>
+                    <div class="card">
                         <div class="card-body">
-                            <h3 class="card-title">${vencidas}</h3>
-                            <p class="card-text">Metas não alcançadas</p>
+                            <h5 class="card-title">Faltam</h5>
+                            <p class="card-text">R$ <fmt:formatNumber value="${totalFaltam}" minFractionDigits="2" maxFractionDigits="2"/></p>
                         </div>
                     </div>
                 </div>
@@ -133,9 +127,9 @@
                                     <td>R$ <fmt:formatNumber value="${meta.valor}" minFractionDigits="2" maxFractionDigits="2"/></td>
                                     <td>${meta.data != null ? meta.data.format(DateTimeFormatter.ofPattern('dd/MM/yyyy')) : ''}</td>
                                     <td>
-                                        <span class="badge bg-${meta.prioridade == 'alta' ? 'danger' : meta.prioridade == 'media' ? 'warning' : 'success'}">
-                                                ${meta.prioridade}
-                                        </span>
+                                <span class="badge bg-${meta.prioridade == 'alta' ? 'danger' : meta.prioridade == 'media' ? 'warning' : 'success'}">
+                                        ${meta.prioridade}
+                                </span>
                                     </td>
                                     <td class="text-center">
                                         <div class="btn-group btn-group-sm">
@@ -166,7 +160,7 @@
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal (mantido igual) -->
 <div class="modal fade" id="newGoalModal" tabindex="-1" aria-labelledby="newGoalModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
