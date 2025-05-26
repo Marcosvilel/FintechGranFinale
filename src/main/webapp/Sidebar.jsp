@@ -27,7 +27,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="transacao.jsp" class="nav-link ${currentPage eq 'transacao.jsp' ? 'active' : ''}">
-                            <i class="bi bi-cash-stack"></i> transacao
+                            <i class="bi bi-cash-stack"></i> Transacao
                         </a>
                     </li>
                     <li class="nav-item">
@@ -38,11 +38,6 @@
                     <li class="nav-item">
                         <a href="metas.jsp" class="nav-link ${currentPage eq 'metas.jsp' ? 'active' : ''}">
                             <i class="bi bi-piggy-bank"></i> Metas
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="relatorios.jsp" class="nav-link ${currentPage eq 'relatorios.jsp' ? 'active' : ''}">
-                            <i class="bi bi-file-earmark-text"></i> Relatorio
                         </a>
                     </li>
                     <li class="nav-item">
