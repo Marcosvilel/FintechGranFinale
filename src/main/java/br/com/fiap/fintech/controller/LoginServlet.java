@@ -26,14 +26,25 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("usuario");
         String senha = req.getParameter("senha");
-
         Usuario usuario = new Usuario(username, senha);
 
         try {
             if (dao.validarUsuario(usuario)) {
-                HttpSession session = req.getSession();
-                session.setAttribute("usuario", username);
-                req.getRequestDispatcher("dashboard.jsp").forward(req, resp);
+                Usuario sessaoUsuario = dao.buscarUsuario(username);
+
+                HttpSession oldSession = req.getSession(false);
+                if (oldSession != null) {
+                    oldSession.invalidate();
+                }
+                HttpSession newSession = req.getSession(true);
+                newSession.setAttribute("usuarioLogado", sessaoUsuario);
+                newSession.setMaxInactiveInterval(30 * 60);
+                resp.sendRedirect(req.getContextPath() + "/dashboard.jsp");
+
+
+//                HttpSession session = req.getSession();
+//                session.setAttribute("usuario", sessaoUsuario);
+//                req.getRequestDispatcher("dashboard.jsp").forward(req, resp);
             } else {
                 req.setAttribute("error", "Usuario ou senha invalidos");
                 req.getRequestDispatcher("index.jsp").forward(req, resp);

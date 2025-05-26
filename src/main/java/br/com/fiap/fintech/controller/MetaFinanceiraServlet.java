@@ -10,6 +10,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -23,12 +24,21 @@ public class MetaFinanceiraServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        usuario = new Usuario(2, "JOAO_DIAS"); // Deve vir da sessão
         dao = DAOFactory.getMetaFinanceiraDAO();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("usuarioLogado") == null) {
+            resp.sendRedirect("login.jsp");
+            return;
+        }
+
+        usuario = (Usuario) session.getAttribute("usuarioLogado");
+
+
         String acao = req.getParameter("acao");
 
         switch (acao) {
@@ -43,6 +53,16 @@ public class MetaFinanceiraServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("usuarioLogado") == null) {
+            resp.sendRedirect("login.jsp");
+            return;
+        }
+
+        usuario = (Usuario) session.getAttribute("usuarioLogado");
+
+
         String acao = req.getParameter("acao");
 
         switch (acao) {

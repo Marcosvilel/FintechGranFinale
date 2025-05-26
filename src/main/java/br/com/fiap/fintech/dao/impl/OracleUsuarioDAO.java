@@ -3,12 +3,14 @@ package br.com.fiap.fintech.dao.impl;
 import br.com.fiap.fintech.dao.UsuarioDAO;
 import br.com.fiap.fintech.exception.DBException;
 import br.com.fiap.fintech.factory.OracleConnectionManager;
+import br.com.fiap.fintech.model.Transacao;
 import br.com.fiap.fintech.model.Usuario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class OracleUsuarioDAO implements UsuarioDAO {
 
@@ -84,6 +86,37 @@ public class OracleUsuarioDAO implements UsuarioDAO {
             }
         }
 
+    }
+
+
+
+    public Usuario buscarUsuario(String username) throws DBException {
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Usuario usuario = null;
+
+        try {
+            conexao = OracleConnectionManager.getInstance().getConnection();
+
+            String sql = "SELECT ID_USUARIO FROM T_USUARIO WHERE USER_NAME = ?";
+
+            ps = conexao.prepareStatement(sql);
+
+            ps.setString(1, username);
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int id = rs.getInt("ID_USUARIO");
+
+                usuario = new Usuario(id, username);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return usuario;
     }
 
 

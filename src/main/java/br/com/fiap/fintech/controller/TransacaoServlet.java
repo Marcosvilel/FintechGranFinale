@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -24,12 +25,19 @@ public class TransacaoServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        usuario = new Usuario(2, "JOAO_DIAS"); // Exemplo - você deve pegar do usuário logado
         dao = DAOFactory.getTransacaoDAO();
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("usuarioLogado") == null) {
+            resp.sendRedirect("login.jsp");
+            return;
+        }
+
+        usuario = (Usuario) session.getAttribute("usuarioLogado");
 
         String acao = req.getParameter("acao");
 
@@ -49,6 +57,14 @@ public class TransacaoServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("usuarioLogado") == null) {
+            resp.sendRedirect("login.jsp");
+            return;
+        }
+
+        usuario = (Usuario) session.getAttribute("usuarioLogado");
 
         String acao = req.getParameter("acao");
 
