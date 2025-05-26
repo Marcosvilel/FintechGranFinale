@@ -70,7 +70,57 @@
 
             <div class="goals-list">
                 <h2>Suas Metas</h2>
-                <div id="goals-container"></div>
+                <div class="card transaction-card">
+                    <div class="card-body p-0" id="transactionList">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Prioridade</th>
+                                    <th>Nome</th>
+                                    <th class="text-end">Valor</th>
+                                    <th class="text-center">Ações</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach var="meta" items="${metas}">
+                                    <tr>
+                                        <td>${meta.data != null ? meta.data.format(DateTimeFormatter.ofPattern('dd/MM/yyyy')) : ''}</td>
+                                        <td>${meta.prioridade}</td>
+                                        <td>${meta.nome}</td>
+                                        <td class="text-end fw-bold">R$ <fmt:formatNumber value="${meta.valor}" minFractionDigits="2" maxFractionDigits="2"/></td>
+                                        <td class="text-center">
+                                            <div class="btn-group btn-group-sm">
+                                                <button class="btn btn-outline-primary"
+                                                        onclick="editarMeta(${meta.id})">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <form action="${pageContext.request.contextPath}/meta" method="post" style="display: inline;">
+                                                    <input type="hidden" name="acao" value="excluir">
+                                                    <input type="hidden" name="id" value="${meta.id}">
+                                                    <button type="submit" class="btn btn-outline-danger"
+                                                            onclick="return confirm('Tem certeza que deseja excluir esta transação?')">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+
+                                <c:if test="${empty metas}">
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted py-4">
+                                            Nenhuma transação cadastrada ainda
+                                        </td>
+                                    </tr>
+                                </c:if>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -85,24 +135,33 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form action="meta-financeira" method="post" id="goalForm">
-                    <input type="hidden" id="goalId" name="acao" value="cadastrar">
-                    <div class="mb-3"><label class="form-label">Nome</label><input type="text" name="nome" id="goalName" class="form-control" required></div>
-                    <div class="mb-3"><label class="form-label">Valor Alvo</label><input type="number" name="valor" id="goalTarget" class="form-control" min="0.01" step="0.01" required></div>
-                    <div class="mb-3"><label class="form-label">Data Limite</label><input type="date" name="data" id="goalDeadline" class="form-control" required></div>
+                <form action="metaFinanceira" method="post" id="goalForm">
+                    <input type="hidden" name="acao" value="cadastrar">
                     <div class="mb-3">
-                        <label class="form-label">Prioridade</label>
-                        <select id="goalPriority" name="prioridade" class="form-select" required>
+                        <label for="goalName" class="form-label">Nome</label>
+                        <input type="text" name="nome" id="goalName" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="goalTarget" class="form-label">Valor Alvo</label>
+                        <input type="number" name="valor" id="goalTarget" class="form-control" min="0.01" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="goalDeadline" class="form-label">Data Limite</label>
+                        <input type="date" name="data" id="goalDeadline" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="goalPriority" class="form-label">Prioridade</label>
+                        <select id="goalPriority" class="form-select" name="prioridade" required>
                             <option value="baixa">Baixa</option>
                             <option value="media" selected>Média</option>
                             <option value="alta">Alta</option>
                         </select>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" id="saveGoalBtn">Salvar</button>
+                        </div>
                     </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary" id="saveGoalBtn">Salvar</button>
             </div>
         </div>
     </div>

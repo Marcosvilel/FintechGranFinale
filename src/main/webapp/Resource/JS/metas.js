@@ -57,26 +57,55 @@ document.addEventListener("DOMContentLoaded", () => {
         const id = document.getElementById("goalId").value;
         const name = document.getElementById("goalName").value.trim();
         const target = parseFloat(document.getElementById("goalTarget").value);
-        const current = parseFloat(document.getElementById("goalCurrent").value);
+        const current = parseFloat(document.getElementById("goalCurrent").value) || 0; // Default 0 se vazio
         const deadline = document.getElementById("goalDeadline").value;
         const priority = document.getElementById("goalPriority").value;
 
-        // Verificações básicas
-        if (!name || isNaN(target) || isNaN(current) || !deadline || !priority) {
-            alert("Preencha todos os campos corretamente.");
+        // Validações melhoradas
+        if (!name) {
+            alert("Por favor, informe o nome da meta.");
             return;
         }
 
-        const goal = { name, target, current, deadline, priority };
+        if (isNaN(target) || target <= 0) {
+            alert("O valor alvo deve ser um número positivo.");
+            return;
+        }
+
+        if (isNaN(current) || current < 0) {
+            alert("O valor atual deve ser um número positivo ou zero.");
+            return;
+        }
+
+        if (!deadline) {
+            alert("Por favor, selecione uma data limite.");
+            return;
+        }
+
+        const goal = {
+            name,
+            target,
+            current,
+            deadline,
+            priority
+        };
 
         if (id === "") {
+            // Adiciona nova meta
             goals.push(goal);
         } else {
+            // Atualiza meta existente
             goals[parseInt(id)] = goal;
         }
 
+        // Salva no localStorage
         localStorage.setItem("goals", JSON.stringify(goals));
-        bootstrap.Modal.getInstance(document.getElementById("goalModal")).hide();
+
+        // Fecha o modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById("goalModal"));
+        modal.hide();
+
+        // Atualiza a exibição
         renderGoals();
     });
 

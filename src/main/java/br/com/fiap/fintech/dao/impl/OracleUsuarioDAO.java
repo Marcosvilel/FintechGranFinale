@@ -21,7 +21,7 @@ public class OracleUsuarioDAO implements UsuarioDAO {
         try {
             conexao = OracleConnectionManager.getInstance().getConnection();
 
-            String sql = "INSERT INTO t_usuario (NOME, E_MAIL, USER_NAME, SENHA, GENERO, CPF, TELEFONE, DATA_NASCIMENTO) VALUES (?, ?, ?, ?, ?, ?, ?, to_date( ? , 'YYYY-MM-DD'))";
+            String sql = "INSERT INTO t_usuario (NOME, E_MAIL, USER_NAME, SENHA, GENERO, CPF, TELEFONE, DATA_NASCIMENTO) VALUES (?, ?, ?, standard_hash(?), ?, ?, ?, to_date( ? , 'YYYY-MM-DD'))";
 
             ps = conexao.prepareStatement(sql, new String[]{"ID_USUARIO"});
 
@@ -98,7 +98,7 @@ public class OracleUsuarioDAO implements UsuarioDAO {
             String username = usuario.getUsername();
             String password = usuario.getPassword();
 
-            String sql = "SELECT * FROM t_usuario WHERE USER_NAME = ? AND SENHA = ?";
+            String sql = "SELECT * FROM t_usuario WHERE USER_NAME = ? AND SENHA = standard_hash(?)";
 
             ps = conexao.prepareStatement(sql);
 

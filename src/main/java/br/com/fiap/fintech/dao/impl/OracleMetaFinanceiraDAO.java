@@ -33,7 +33,7 @@ public class OracleMetaFinanceiraDAO implements MetaFinanceiraDAO {
             ps.setString(2, metaFinanceira.getNome());
             ps.setDouble(3, metaFinanceira.getValor());
             ps.setDate(4, Date.valueOf(metaFinanceira.getData()));
-            ps.setString(4, metaFinanceira.getPrioridade());
+            ps.setString(5, metaFinanceira.getPrioridade());
 
             ps.executeUpdate();
 
@@ -57,7 +57,7 @@ public class OracleMetaFinanceiraDAO implements MetaFinanceiraDAO {
         try {
             conexao = OracleConnectionManager.getInstance().getConnection();
 
-            String sql = "UPDATE t_meta_financeira SET NOME_META = ?, VALOR_META = ?, DATA_META = to_date(?, 'yyyy-mm-dd') WHERE ID_USUARIO = ? and ID_META_FINANCEIRA = ?";
+            String sql = "UPDATE t_meta_financeira SET NOME_META = ?, VALOR_META = ?, DATA_META = to_date(?, 'yyyy-mm-dd'), PRIORIDADE_META = ? WHERE ID_USUARIO = ? and ID_META_FINANCEIRA = ?";
 
             ps = conexao.prepareStatement(sql);
 
@@ -67,6 +67,7 @@ public class OracleMetaFinanceiraDAO implements MetaFinanceiraDAO {
             ps.setString(4, metaFinanceira.getPrioridade());
             ps.setInt(4, usuario.getId());
             ps.setInt(5, metaFinanceira.getId());
+            ps.setString(6, metaFinanceira.getPrioridade());
 
             ps.executeUpdate();
 
