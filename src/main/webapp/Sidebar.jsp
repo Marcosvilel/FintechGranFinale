@@ -21,7 +21,7 @@
                 </div>
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                        <a href="dashboard.jsp" class="nav-link ${currentPage eq 'dashboard.jsp' ? 'active' : ''}">
+                        <a href="${pageContext.request.contextPath}/dash?acao=listar" class="nav-link ${currentPage eq 'dashboard.jsp' ? 'active' : ''}">
                             <i class="bi bi-house-door"></i> Dashboard
                         </a>
                     </li>

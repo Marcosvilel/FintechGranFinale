@@ -197,16 +197,21 @@ public class OracleTransacaoDAO implements TransacaoDAO {
 
 
 
-    public List<Transacao> listarLastTransacao(Usuario usuario) {
+    public List<Transacao> listarTransacaoMes(Usuario usuario) {
 
-        List<Transacao> lista = new ArrayList<>();
+        List<Transacao> listaMes = new ArrayList<>();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
             conexao = OracleConnectionManager.getInstance().getConnection();
 
-            String sql = "SELECT ID_TRANSACAO, TIPO_TRANSACAO, DESCRICAO_TRANSACAO, CATEGORIA_TRANSACAO, VALOR_TRANSACAO, to_date(DATA_TRANSACAO, 'yy-mm-dd') as DATA_TRANSACAO FROM t_transacao WHERE ID_USUARIO = ?";
+            String sql = "SELECT ID_TRANSACAO, TIPO_TRANSACAO, DESCRICAO_TRANSACAO, CATEGORIA_TRANSACAO, VALOR_TRANSACAO, to_date(DATA_TRANSACAO, 'yy-mm-dd') as DATA_TRANSACAO, to_char(TO_DATE(DATA_TRANSACAO, 'yy-mm-dd'),'MM-YYYY'), to_char(SYSDATE,'MM YYYY') " +
+                    "FROM t_transacao " +
+                    "WHERE ID_USUARIO = ? " +
+                    "AND to_char(TO_DATE(DATA_TRANSACAO, 'yy-mm-dd'),'MM YYYY') = to_char(SYSDATE,'MM YYYY') " +
+                    "order by DATA_TRANSACAO desc, id_transacao desc";
+
             ps = conexao.prepareStatement(sql);
             ps.setInt(1, usuario.getId());
             rs =  ps.executeQuery();
@@ -219,7 +224,7 @@ public class OracleTransacaoDAO implements TransacaoDAO {
                 double valor = rs.getDouble("VALOR_TRANSACAO");
                 LocalDate data = rs.getDate("DATA_TRANSACAO").toLocalDate();
                 Transacao transacao = new Transacao(id, tipo, descricao, categoria, valor, data);
-                lista.add(transacao);
+                listaMes.add(transacao);
             }
 
         } catch (SQLException e) {
@@ -232,7 +237,7 @@ public class OracleTransacaoDAO implements TransacaoDAO {
                 e.printStackTrace();
             }
         }
-        return lista;
+        return listaMes;
     }
 
 

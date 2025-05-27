@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
                 HttpSession newSession = req.getSession(true);
                 newSession.setAttribute("usuarioLogado", sessaoUsuario);
                 newSession.setMaxInactiveInterval(30 * 60);
-                resp.sendRedirect(req.getContextPath() + "/dashboard.jsp");
+                resp.sendRedirect(req.getContextPath() + "/dash?acao=listar");
 
 
 //                HttpSession session = req.getSession();

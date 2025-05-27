@@ -22,4 +22,5 @@ public interface TransacaoDAO {
 
     double totalExpense(Usuario usuario) throws DBException;
 
+    List<Transacao> listarTransacaoMes(Usuario usuario);
 }

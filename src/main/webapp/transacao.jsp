@@ -23,9 +23,6 @@
           <i class="bi bi-cash-stack me-2"></i>Transações
         </h1>
         <div>
-          <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#filterModal">
-            <i class="bi bi-funnel"></i> Filtrar
-          </button>
           <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newTransactionModal">
             <i class="bi bi-plus-circle"></i> Nova Transação
           </button>
@@ -68,12 +65,6 @@
             <ul class="nav nav-tabs card-header-tabs">
               <li class="nav-item">
                 <a class="nav-link active" href="#">Todas</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Entradas</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Saídas</a>
               </li>
             </ul>
           </div>
