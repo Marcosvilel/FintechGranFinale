@@ -18,7 +18,4 @@ public class DAOFactory {
         return new br.com.fiap.fintech.dao.impl.OracleTransacaoDAO();
     }
 
-    public static br.com.fiap.fintech.dao.InvestimentoDAO getInvestimentoDAO() {
-        return new br.com.fiap.fintech.dao.impl.OracleInvestimentoDAO();
-    }
 }

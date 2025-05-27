@@ -23,9 +23,6 @@
                     <i class="bi bi-piggy-bank me-2"></i>Metas Financeiras
                 </h1>
                 <div class="d-flex">
-                    <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#filterModal">
-                        <i class="bi bi-funnel"></i> Filtrar
-                    </button>
                     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newGoalModal">
                         <i class="bi bi-plus-circle"></i> Nova Meta
                     </button>

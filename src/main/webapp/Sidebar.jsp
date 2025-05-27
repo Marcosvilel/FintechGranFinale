@@ -31,11 +31,6 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="investimento.jsp" class="nav-link ${currentPage eq 'investimento.jsp' ? 'active' : ''}">
-                            <i class="bi bi-graph-up"></i> Investimentos
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a href="${pageContext.request.contextPath}/meta?acao=listar" class="nav-link ${currentPage eq 'metas.jsp' ? 'active' : ''}">
                             <i class="bi bi-piggy-bank"></i> Metas
                         </a>

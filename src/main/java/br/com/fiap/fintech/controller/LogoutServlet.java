@@ -26,7 +26,7 @@ public class LogoutServlet extends HttpServlet {
             session.invalidate();
         }
 
-
+        //Ir para tela de login
         response.sendRedirect(request.getContextPath() + "/index.jsp");
     }
 
