@@ -120,6 +120,36 @@ public class OracleUsuarioDAO implements UsuarioDAO {
     }
 
 
+    public Usuario buscarUsuarioName(int id) throws DBException {
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Usuario usuario = null;
+
+        try {
+            conexao = OracleConnectionManager.getInstance().getConnection();
+
+            String sql = "SELECT NOME, E_MAIL FROM T_USUARIO WHERE ID_USUARIO = ?";
+
+            ps = conexao.prepareStatement(sql);
+
+            ps.setInt(1, id);
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String email = rs.getString("E_MAIL");
+                String nome = rs.getString("NOME");
+                usuario = new Usuario(id, email, nome);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return usuario;
+    }
+
+
     @Override
     public boolean validarUsuario(Usuario usuario) throws DBException {
         PreparedStatement ps = null;

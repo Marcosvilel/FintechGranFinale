@@ -41,10 +41,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="perfil.jsp" class="nav-link ${currentPage eq 'perfil.jsp' ? 'active' : ''}">
+                        <a href="${pageContext.request.contextPath}/cadastro" class="nav-link ${currentPage eq 'perfil.jsp' ? 'active' : ''}">
                             <i class="bi bi-person-circle"></i> Perfil
                         </a>
                     </li>
                 </ul>
             </div>
         </div>
+    </div>
+</div>

@@ -1,5 +1,6 @@
-
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -25,14 +26,14 @@
                     <div class="profile-icon">
                         <i class="bi bi-person-circle"></i>
                     </div>
-                    <h3>Bem-vindo, <span id="user-name">Usuário</span></h3>
+                    <h3>Bem-vindo, <span>${usuario.name}</span></h3>
 
                     <div class="profile-email">
                         <i class="bi bi-envelope-fill me-2"></i>
-                        <span id="user-email">${usuario.email}</span>
+                        <span>${usuario.email}</span>
                     </div>
 
-                    <form action="LogoutServlet" method="post">
+                    <form action="LogoutServlet" method="get">
                         <button type="submit" class="btn btn-danger logout-btn">
                             <i class="bi bi-box-arrow-right me-2"></i> Sair da Conta
                         </button>

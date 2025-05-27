@@ -120,6 +120,9 @@ public class MetaFinanceiraServlet extends HttpServlet {
 
 
         double totalFaltam = totalMetas - totalAlcancado;
+        if(totalFaltam < 0) {
+            totalFaltam = 0;
+        }
 
         req.setAttribute("totalFaltam", totalFaltam);
 

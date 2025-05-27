@@ -42,7 +42,6 @@ public class DashboardServlet extends HttpServlet {
         usuario = (Usuario) session.getAttribute("usuarioLogado");
 
         listar(req, resp);
-        System.out.println("CALLlistarFunc");
     }
 
 

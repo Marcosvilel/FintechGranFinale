@@ -1,13 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Get user data from session (simulated here - in a real app, this would come from your backend)
-    const userData = {
-        name: "Carlos Silva",
-        email: "carlos.silva@example.com"
-    };
+    // const userData = {
+    //     name: "Carlos Silva",
+    //     email: "carlos.silva@example.com"
+    // };
 
     // Set user data in the DOM
-    document.getElementById('user-name').textContent = userData.name;
-    document.getElementById('user-email').textContent = userData.email;
+    // document.getElementById('user-name').textContent = userData.name;
+    // document.getElementById('user-email').textContent = userData.email;
 
     // Add click effect to the logout button
     const logoutBtn = document.querySelector('.logout-btn');

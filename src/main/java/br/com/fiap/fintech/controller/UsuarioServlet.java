@@ -10,6 +10,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
@@ -17,6 +18,8 @@ import java.io.IOException;
 public class UsuarioServlet extends HttpServlet {
 
     private UsuarioDAO dao;
+    private Usuario usuario;
+
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -45,7 +48,27 @@ public class UsuarioServlet extends HttpServlet {
             req.setAttribute("error", "Erro ao cadastrar usuario");
             req.getRequestDispatcher("/cadastro_usuario.jsp").forward(req, resp);
         }
+    }
 
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("usuarioLogado") == null) {
+            resp.sendRedirect("login.jsp");
+            return;
+        }
+
+        usuario = (Usuario) session.getAttribute("usuarioLogado");
+
+        try {
+            usuario = dao.buscarUsuarioName(usuario.getId());
+        } catch (DBException e) {
+            throw new RuntimeException(e);
+        }
+
+        req.setAttribute("usuario", usuario);
+
+        req.getRequestDispatcher("perfil.jsp").forward(req, resp);
 
     }
+
 }
