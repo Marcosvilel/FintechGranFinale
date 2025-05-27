@@ -63,8 +63,10 @@
             </div>
 
             <div class="card goal-card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>Minhas Metas</span>
+                <div class="card-header d-flex justify-content-between align-items-center gap-2">
+                    <span>
+                        <i class="bi bi-cash-coin"></i>  Minhas Metas
+                    </span>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">

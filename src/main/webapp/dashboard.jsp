@@ -28,7 +28,9 @@
             <!-- Últimas Transações -->
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0">Atividades do Mês</h5>
+                    <h5 class="mb-0">
+                        <i class="bi bi-clock-history"></i> Atividades do Mês
+                    </h5>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -45,7 +47,7 @@
                             <c:forEach var="transacao" items="${transacoesMes}">
                             <tr>
                                 <td>${transacao.descricao}</td>
-                                <td class="text-end fw-bold">
+                                <td class="fw-bold text-nowrap">
                                     <c:if test="${transacao.tipo == 'income'}">+</c:if>
                                     <c:if test="${transacao.tipo == 'expense'}">-</c:if>
                                     R$ <fmt:formatNumber value="${transacao.valor}" minFractionDigits="2" maxFractionDigits="2"/>

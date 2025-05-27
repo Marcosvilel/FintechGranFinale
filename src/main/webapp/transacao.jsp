@@ -60,7 +60,9 @@
 
       <div class="card transaction-card">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <span>Histórico de Transações</span>
+          <span>
+           <i class="bi bi-clock-history"></i> Histórico de Transações
+          </span>
           <div>
             <ul class="nav nav-tabs card-header-tabs">
               <li class="nav-item">
