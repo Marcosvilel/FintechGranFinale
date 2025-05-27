@@ -45,7 +45,7 @@
                             <c:forEach var="transacao" items="${transacoesMes}">
                             <tr>
                                 <td>${transacao.descricao}</td>
-                                <td class="text-end fw-bold">
+                                <td class="fw-bold text-nowrap">
                                     <c:if test="${transacao.tipo == 'income'}">+</c:if>
                                     <c:if test="${transacao.tipo == 'expense'}">-</c:if>
                                     R$ <fmt:formatNumber value="${transacao.valor}" minFractionDigits="2" maxFractionDigits="2"/>
