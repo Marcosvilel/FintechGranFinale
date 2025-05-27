@@ -195,6 +195,52 @@ public class OracleTransacaoDAO implements TransacaoDAO {
     }
 
 
+
+
+    public List<Transacao> listarLastTransacao(Usuario usuario) {
+
+        List<Transacao> lista = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conexao = OracleConnectionManager.getInstance().getConnection();
+
+            String sql = "SELECT ID_TRANSACAO, TIPO_TRANSACAO, DESCRICAO_TRANSACAO, CATEGORIA_TRANSACAO, VALOR_TRANSACAO, to_date(DATA_TRANSACAO, 'yy-mm-dd') as DATA_TRANSACAO FROM t_transacao WHERE ID_USUARIO = ?";
+            ps = conexao.prepareStatement(sql);
+            ps.setInt(1, usuario.getId());
+            rs =  ps.executeQuery();
+
+            while (rs.next()){
+                int id = rs.getInt("ID_TRANSACAO");
+                String tipo = rs.getString("TIPO_TRANSACAO");
+                String descricao = rs.getString("DESCRICAO_TRANSACAO");
+                String categoria = rs.getString("CATEGORIA_TRANSACAO");
+                double valor = rs.getDouble("VALOR_TRANSACAO");
+                LocalDate data = rs.getDate("DATA_TRANSACAO").toLocalDate();
+                Transacao transacao = new Transacao(id, tipo, descricao, categoria, valor, data);
+                lista.add(transacao);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                ps.close();
+                conexao.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return lista;
+    }
+
+
+
+
+
+
+
     public double totalIncome(Usuario usuario) throws DBException {
 
         PreparedStatement ps = null;

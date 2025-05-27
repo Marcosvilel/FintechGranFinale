@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="Resource/CSS/dashboard.css"> <!-- continue usando seu CSS -->
+    <link rel="stylesheet" href="Resource/CSS/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
@@ -27,7 +27,7 @@
                 <div class="col-md-6">
                     <div class="card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">Limite Disponível</h5>
+                            <h5 class="card-title">Balanço Total</h5>
                             <h2 class="card-text">R$ 5.000,00</h2>
                             <p class="card-text text-muted">80% do limite total</p>
                             <div class="progress mt-3">
@@ -63,7 +63,7 @@
                                 <th>Descrição</th>
                                 <th>Valor</th>
                                 <th>Data</th>
-                                <th>Status</th>
+                                <th>Tipo</th>
                             </tr>
                             </thead>
                             <tbody>

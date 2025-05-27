@@ -1,6 +1,7 @@
 package br.com.fiap.fintech.controller;
 
 import br.com.fiap.fintech.dao.MetaFinanceiraDAO;
+import br.com.fiap.fintech.dao.TransacaoDAO;
 import br.com.fiap.fintech.exception.DBException;
 import br.com.fiap.fintech.factory.DAOFactory;
 import br.com.fiap.fintech.model.MetaFinanceira;
@@ -19,12 +20,14 @@ import java.util.List;
 @WebServlet("/meta")
 public class MetaFinanceiraServlet extends HttpServlet {
     private MetaFinanceiraDAO dao;
+    private TransacaoDAO transacaoDAO;
     private Usuario usuario;
 
     @Override
     public void init() throws ServletException {
         super.init();
         dao = DAOFactory.getMetaFinanceiraDAO();
+        transacaoDAO =  DAOFactory.getTransacaoDAO();
     }
 
     @Override
@@ -86,6 +89,40 @@ public class MetaFinanceiraServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
         req.setAttribute("metas", metas);
+
+
+        double totalMetas = 0;
+        try {
+            totalMetas = dao.totalMeta(usuario);
+        } catch (DBException e) {
+            throw new RuntimeException(e);
+        }
+        req.setAttribute("totalMetas", totalMetas);
+
+
+        double income = 0;
+        try {
+            income = transacaoDAO.totalIncome(usuario);
+        } catch (DBException e) {
+            throw new RuntimeException(e);
+        }
+
+        double expense = 0;
+        try {
+            expense = transacaoDAO.totalExpense(usuario);
+        } catch (DBException e) {
+            throw new RuntimeException(e);
+        }
+
+        double totalAlcancado = income - expense;
+
+        req.setAttribute("totalAlcancado", totalAlcancado);
+
+
+        double totalFaltam = totalMetas - totalAlcancado;
+
+        req.setAttribute("totalFaltam", totalFaltam);
+
         req.getRequestDispatcher("metas.jsp").forward(req, resp);
     }
 

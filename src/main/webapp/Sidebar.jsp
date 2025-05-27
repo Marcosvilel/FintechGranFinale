@@ -26,7 +26,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="transacao.jsp" class="nav-link ${currentPage eq 'transacao.jsp' ? 'active' : ''}">
+                        <a href="${pageContext.request.contextPath}/transacao?acao=pagina-transacao" class="nav-link ${currentPage eq 'transacao.jsp' ? 'active' : ''}">
                             <i class="bi bi-cash-stack"></i> Transacao
                         </a>
                     </li>
@@ -36,7 +36,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="metas.jsp" class="nav-link ${currentPage eq 'metas.jsp' ? 'active' : ''}">
+                        <a href="${pageContext.request.contextPath}/meta?acao=listar" class="nav-link ${currentPage eq 'metas.jsp' ? 'active' : ''}">
                             <i class="bi bi-piggy-bank"></i> Metas
                         </a>
                     </li>
