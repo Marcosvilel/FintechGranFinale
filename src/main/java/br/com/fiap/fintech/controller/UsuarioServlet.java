@@ -42,7 +42,7 @@ public class UsuarioServlet extends HttpServlet {
         try {
             dao.cadastrar(usuario);
             req.setAttribute("mensagem", "Usuario cadastrado com sucesso");
-            req.getRequestDispatcher("/dashboard.jsp").forward(req, resp);
+            req.getRequestDispatcher("/index.jsp").forward(req, resp);
         } catch (DBException e) {
             e.printStackTrace();
             req.setAttribute("error", "Erro ao cadastrar usuario");
